@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>DEVils Poker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@600;700&family=Pirata+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0402;--ink:#FFF2D8;--dim:#d2b998;--lbl:#d9b98f;--amber:#ffaa2b;
+ --gothic:"Pirata One","Palatino Linotype",Georgia,serif;
+ --body:"MedievalSharp",Georgia,"Times New Roman",serif;--cin:"Cinzel",Georgia,serif}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--body);font-size:1.05rem;line-height:1.4;-webkit-font-smoothing:antialiased;
+ background-color:var(--bg);background-image:radial-gradient(circle at 50% 12%,#ff78141f 0,transparent 60%),radial-gradient(circle at 10% 90%,#b414141a 0,transparent 45%),radial-gradient(circle at 90% 90%,#781eb414 0,transparent 45%),linear-gradient(180deg,#090302,#120704 35%,#0d0503 70%,#070202)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 120px 20px #000b,inset 0 0 35px 2px #ff3c0026}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #ffe082;outline-offset:3px}
+.wrap{position:relative;max-width:1280px;margin:0 auto;padding:16px 20px 18px}
+h1{font-family:var(--gothic);font-weight:400;font-size:clamp(2.2rem,5vw,3.2rem);line-height:1;margin:0;letter-spacing:.02em;text-shadow:0 4px 10px #000e}
+.tag{font-family:var(--cin);font-weight:700;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#ff7a80;border:1px solid #d92c3480;background:#450a0d99;border-radius:4px;padding:2px 7px}
+.sub{margin:4px 0 0;color:var(--dim)}
+.sub b{color:var(--amber);text-decoration:underline wavy #ffaa2b80;text-underline-offset:4px}
+.rank{font-family:var(--cin);font-size:.78rem;color:#c9a17f}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px}
+.head.center{justify-content:center;text-align:center}
+.head.center .brand{justify-content:center}
+.brand{display:flex;align-items:center;gap:12px}
+.titlerow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.seal{width:54px;height:54px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7a1216,#330807 55%,#120302);border:2px solid #ffaa2b99;box-shadow:0 0 16px #e6282880}
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:236px;min-height:48px;padding:0 16px;border-radius:8px;font-size:1.08rem;letter-spacing:.02em;transition:border-color .2s,box-shadow .2s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn .pill{font-family:var(--cin);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;padding:1px 6px}
+.btn.inv{background:linear-gradient(#2a170f,#150a06);border:1px solid #784126;color:#f2dfc7;box-shadow:0 4px 12px #0009}
+.btn.inv:hover{border-color:#ff9d2e}
+.btn.inv .pill{border:1px solid #7a4a2e;background:#100603;color:#e0bd9c}
+.btn.rev{background:linear-gradient(#d9232c,#a8141b 50%,#6b090e);border:1px solid #ff6666b3;color:#fff7f4;font-weight:700;box-shadow:0 0 24px #d9232c99;text-shadow:0 2px 4px #000c}
+.btn.rev:hover{border-color:#ffa3a3;box-shadow:0 0 34px #f02832d9}
+.btn.rev .pill{background:#400508cc;border:1px solid #ff707060;color:#ffc9a0;font-weight:400}
+.btn[disabled]{opacity:.5;cursor:default;box-shadow:none}
+.btn.ready{animation:ready 1.2s ease-in-out infinite alternate}
+@keyframes ready{to{box-shadow:0 0 38px 6px #ff2b3dcc}}
+.err{background:#3a0d10;border:1px solid #ff2b3d;border-radius:8px;padding:10px 14px;margin:12px 0}
+.coven{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:14px;padding-top:10px;border-top:1px solid #31170d}
+.covenl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.people{display:flex;flex-wrap:wrap;align-items:center;gap:8px;list-style:none;margin:0;padding:0}
+.lbl{font-family:var(--cin);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lbl)}
+.chip{display:flex;align-items:center;gap:8px;padding:3px 12px;min-height:30px;border-radius:999px;border:1px solid #6a3a22;background:#140804;color:#e6d0b8;font-size:.92rem}
+.chip em{font-style:normal;color:#cfae94;font-size:.85rem}
+.chip.done{border-color:#d97c36;background:#221008;color:#edd9c2}
+.chip.done em{color:#86efac}
+.chip.me{border-color:var(--amber);background:linear-gradient(90deg,#381c0c,#1c0c05);color:#ffd99f}
+.chip .dot{width:10px;height:10px;border-radius:50%;border:1.5px solid #b08a70;flex:none}
+.chip.done .dot{background:#22c55e;border-color:#22c55e;box-shadow:0 0 6px #22c55e}
+.chip .x{min-width:24px;min-height:24px;background:none;border:0;border-radius:50%;color:#cfae94;font-size:1.1rem;line-height:1}
+.chip .x:hover{color:#ff6b72;background:#ffffff14}
+.counts{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--cin);font-size:.8rem;letter-spacing:.05em;color:#dfb98d}
+.counts strong{color:var(--amber)}
+.burn{position:relative;margin:48px 0 24px;height:22px}
+.track{position:absolute;inset:auto 0 0 0;height:22px;background:#0c0405;border:1px solid #5a2c1a;border-radius:4px;overflow:visible}
+.fill{position:absolute;left:0;bottom:0;height:100%;border-radius:3px;transition:width .6s ease;background:linear-gradient(90deg,#7a0d12,#d1272a 35%,#e8611f 70%,#f2a341);box-shadow:0 0 18px 2px #e8611f99;animation:glow 1.4s ease-in-out infinite alternate}
+.flames{position:absolute;left:0;right:0;bottom:100%;height:0;display:flex;justify-content:space-around;align-items:flex-end}
+.flames i{display:block;width:16px;height:26px;margin-bottom:-2px;border-radius:50% 50% 20% 20%/80% 80% 20% 20%;transform-origin:50% 100%;background:linear-gradient(0deg,#e8611f,#f2a341 60%,#ffe9a8);animation:lick .9s ease-in-out infinite}
+.flames i:nth-child(3n){animation-duration:.7s;height:34px}
+.flames i:nth-child(3n+1){animation-delay:-.35s;height:22px}
+.flames i:nth-child(3n+2){animation-delay:-.6s}
+@keyframes lick{0%,100%{transform:scaleY(.75) skewX(-4deg)}50%{transform:scaleY(1.15) skewX(5deg)}}
+@keyframes glow{from{filter:brightness(.92)}to{filter:brightness(1.2)}}
+.deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+@media (min-width:560px){.deck{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1000px){.deck{--h:calc((100vh - 375px) / 2);grid-template-columns:repeat(6,minmax(0,1fr));margin-left:auto;margin-right:auto;max-width:max(700px,calc(6 * var(--h) * .674 + 60px))}}
+.pc{--t:#ffaa2b;--bd:#bd6e1a;--tag:#e0a860;container-type:inline-size;position:relative;display:flex;flex-direction:column;justify-content:space-between;width:100%;aspect-ratio:172/255;padding:10px 10px 9px;text-align:left;border-radius:14px;border:1.5px solid var(--bd);
+ background:radial-gradient(circle at 50% 30%,#20100a,#140905 70%,#0d0402);color:var(--t);box-shadow:0 4px 18px #000d,inset 0 0 12px color-mix(in srgb,var(--bd) 25%,transparent);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,border-color .2s}
+.pc.t-crimson{--t:#ff4d55;--bd:#a32228;--tag:#ff8a90}
+.pc.t-void{--t:#c084fc;--bd:#7c2d9e;--tag:#d3adfa}
+.pc::before{content:"";position:absolute;inset:6px;border:1px dashed color-mix(in srgb,var(--bd) 50%,transparent);border-radius:9px;pointer-events:none}
+.pc::after{content:"";position:absolute;inset:3px;pointer-events:none;opacity:.85;background-repeat:no-repeat;
+ background-image:linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t));
+ background-position:0 0,0 0,100% 0,100% 0,0 100%,0 100%,100% 100%,100% 100%;background-size:12px 2px,2px 12px,12px 2px,2px 12px,12px 2px,2px 12px,12px 2px,2px 12px}
+.pc>*{position:relative;z-index:1}
+button.pc:hover{transform:translateY(-6px) scale(1.015);border-color:var(--t);box-shadow:0 8px 28px color-mix(in srgb,var(--t) 35%,transparent),inset 0 0 16px color-mix(in srgb,var(--t) 25%,transparent)}
+.pc.sel{--bd:var(--t);border-width:2px;border-color:var(--t);background:radial-gradient(circle at 50% 25%,color-mix(in srgb,var(--t) 20%,#1a0b06),#100502 70%);transform:translateY(-4px) scale(1.02);animation:aura 3s infinite alternate ease-in-out}
+button.pc.sel:hover{transform:translateY(-4px) scale(1.02)}
+@keyframes aura{from{box-shadow:0 0 24px color-mix(in srgb,var(--t) 50%,transparent),inset 0 0 16px color-mix(in srgb,var(--t) 28%,transparent)}to{box-shadow:0 0 42px color-mix(in srgb,var(--t) 80%,transparent),0 0 18px var(--t),inset 0 0 26px color-mix(in srgb,var(--t) 40%,transparent)}}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.num{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.n{font-family:var(--gothic);font-size:clamp(1.5rem,19cqw,2.5rem);line-height:1;-webkit-text-stroke:.8px currentColor;text-shadow:0 2px 4px #000c}
+.tagicon{width:1.6rem;height:1.6rem;display:block}
+.rune{font-family:var(--cin);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tag);text-align:right;line-height:1.2;padding-top:3px}
+@container (max-width:135px){.rune{display:none}}
+.art{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:2px 0}
+.ill{height:100%;width:auto;max-width:82%;aspect-ratio:1}
+.cap{display:flex;align-items:flex-start;justify-content:center;min-height:4.7em;padding-top:6px;text-align:center;text-wrap:balance;font-size:clamp(.72rem,8cqw,.95rem);line-height:1.18;font-weight:700;color:var(--ink);text-shadow:0 1px 2px #000e}
+.foot{margin-top:14px;padding-top:8px;border-top:1px solid #31160c;color:#d6b797;font-size:.95rem}
+.foot span{color:var(--amber)}
+.stage{text-align:center;padding-top:14px}
+.verdict{margin:0 auto 26px;max-width:680px}
+.verdict .big{font-family:var(--gothic);font-size:clamp(2.4rem,8vw,4rem);line-height:1.05;margin:0;color:var(--ink);text-shadow:0 0 28px #e8611f88}
+.verdict p{margin:10px 0 0;color:var(--dim);font-size:1.15rem}
+.verdict p.big{margin:0;color:var(--ink)}
+.faces{display:flex;flex-wrap:wrap;justify-content:center;gap:24px 18px}
+.face{width:clamp(150px,22vw,200px)}
+.face.solo{width:clamp(190px,36vw,270px)}
+.face .pc{animation:flip .55s ease-out both;animation-delay:calc(var(--i) * 110ms)}
+@keyframes flip{from{transform:perspective(700px) rotateY(90deg);opacity:0}to{transform:none;opacity:1}}
+.who{margin-top:12px;font-size:1.1rem}
+.hint{color:var(--dim);margin:14px 0 0}
+.landing{text-align:center;padding-top:9vh}
+.landing .brand{justify-content:center;margin-bottom:12px}
+.landing .btn{margin-top:22px}
+[class*="anim-"]{transform-box:fill-box;transform-origin:50% 50%}
+@keyframes magmaPulse{0%,100%{filter:drop-shadow(0 0 3px #ff3b00) drop-shadow(0 0 7px #ff8c00);stroke:#ff7700;opacity:.85}50%{filter:drop-shadow(0 0 6px #ffedd5) drop-shadow(0 0 14px #ff3700);stroke:#fff4cc;opacity:1}}
+.anim-magma-pulse{animation:magmaPulse 2.4s infinite ease-in-out}
+@keyframes emberDrift{0%{transform:translate(0,0) scale(.6);opacity:0}20%{opacity:1}80%{opacity:.8}100%{transform:translate(var(--dx,-4px),-18px) scale(1.1);opacity:0}}
+.anim-ember-1{animation:emberDrift 2.2s infinite ease-out;--dx:-3px}
+.anim-ember-2{animation:emberDrift 2.8s infinite ease-out .8s;--dx:4px}
+.anim-ember-3{animation:emberDrift 1.9s infinite ease-out 1.3s;--dx:-1px}
+@keyframes flameFlicker{0%,100%{transform:scaleY(1)}33%{transform:scaleY(1.1) scaleX(.94) skewX(2deg)}66%{transform:scaleY(.94) scaleX(1.05) skewX(-2deg)}}
+.anim-inferno-flames{animation:flameFlicker 1.4s infinite alternate ease-in-out;transform-origin:50% 100%}
+@keyframes sip{0%,60%,100%{transform:translateY(0) rotate(0)}75%{transform:translateY(-.8px) rotate(-1.5deg)}}
+.anim-calm-sipper{animation:sip 4s infinite ease-in-out;transform-origin:50% 100%}
+@keyframes fumeRise{0%{transform:translateY(0) scaleX(.8);opacity:.15}50%{transform:translateY(-4px) scaleX(1.1);opacity:.65}100%{transform:translateY(-9px) scaleX(1.3);opacity:0}}
+.anim-mug-steam{animation:fumeRise 2.6s infinite ease-in-out}
+@keyframes pulseGlow{0%,100%{opacity:.55;transform:scale(.95)}50%{opacity:1;transform:scale(1.06)}}
+.anim-husk-glow{animation:pulseGlow 3s infinite ease-in-out}
+.anim-soul-core{animation:pulseGlow 2.4s infinite ease-in-out}
+@keyframes infuse{0%{transform:translateY(-4px);opacity:0}50%{opacity:1}100%{transform:translateY(3px);opacity:0}}
+.anim-soul-infusion{animation:infuse 2.6s infinite ease-in}
+@keyframes phaseGlyph{0%,100%{opacity:.35;transform:translateY(0) scale(.92)}50%{opacity:1;transform:translateY(-3px) scale(1.1)}}
+.anim-trail-q1{animation:phaseGlyph 2.5s infinite ease-in-out}
+.anim-trail-q2{animation:phaseGlyph 2.9s infinite ease-in-out 1.2s}
+.anim-trail-q3{animation:phaseGlyph 2.2s infinite ease-in-out .6s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.2px)}}
+.anim-dev-flee{animation:bob .5s infinite ease-in-out}
+@keyframes flap{0%,100%{transform:skewX(0)}50%{transform:skewX(-6deg)}}
+.anim-coat-trail{animation:flap .6s infinite ease-in-out;transform-origin:100% 50%}
+@keyframes puff{0%{transform:scale(.7);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+.anim-dust-puff{animation:puff 1.2s infinite ease-out}
+button.seal{cursor:pointer;padding:0;color:#d9b98f;transition:box-shadow .2s,color .2s,border-color .2s}
+button.seal:hover{border-color:#ffaa2b}
+button.seal[aria-pressed="true"]{color:#ffaa2b;box-shadow:0 0 22px #ffaa2bb0;animation:sealbeat 1.2s ease-in-out infinite alternate}
+@keyframes sealbeat{to{box-shadow:0 0 32px #ffaa2b}}
+.seal svg{width:50%;height:50%}
+.sp{position:fixed;right:16px;bottom:16px;z-index:30;width:min(300px,calc(100vw - 32px));border-radius:12px;overflow:hidden;box-shadow:0 8px 30px #000c;visibility:hidden;opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
+.sp.show{visibility:visible;opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js" crossorigin></script>
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef } = React;
+const EXPECTED = 4; // desired team size: the bar scales to this
+const NAMES = ["Beelzebub","Mephistopheles","Asmodeus","Belial","Astaroth","Abaddon","Baphomet","Moloch","Paimon","Lucifer","Lilith","Mammon","Behemoth","Leviathan","Azazel","Belphegor","Furfur","Andras","Malphas","Bael","Naamah","Xaphan","Vapula","Zagan"];
+const DECK = [["0","“Already fixed it” (lies)"],["1","Stack Overflow copy-paste, then prayed"],["2","Renamed one variable, deployed to prod"],["3","Added a button, broke the one next to it"],["5","New endpoint, zero tests, full YOLO"],["8","“Works on my machine” (exorcism pending)"],["13","Unlucky 13: legacy code archaeology, bring holy water"],["20","Undocumented third-party API, summon the vendor"],["40","Rewrite the monolith, sacrifice the sprint"],["100","This is fine. Migrate the database. Live. On a Friday."],["☕","Send help and coffee, need more info"],["?","No idea, ask the PO, flee the meeting"]];
+const CARD = Object.fromEntries(DECK.map(([v, c]) => [v, { c }]));
+const TAGS = {"0":"Null • ᚱ","1":"I • Pact","2":"II • Pyre","3":"III • Chaos","5":"V • Abyss","8":"VIII • Poltergeist","13":"XIII • Mort ✕","20":"XX • Vendor","40":"XL • Sacrifice","100":"C • Doom","☕":"Chalice • Soul","?":"Void • Puzzle"};
+const tierOf = v => ["☕","?"].includes(v) ? "void" : ["13","20","40","100"].includes(v) ? "crimson" : "amber";
+const ART = {"0": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Cursed Terminal Base --> <rect fill=\"#0d0402\" height=\"28\" rx=\"2\" stroke=\"#bd6e1a\" stroke-width=\"1.6\" width=\"40\" x=\"15\" y=\"24\"></rect> <path d=\"M11 52h48l-4 6H15l-4-6z\" fill=\"#1f0c05\" stroke=\"#783e18\" stroke-width=\"1.2\"></path> <!-- Familiar Shadow Cat behind screen --> <path d=\"M22 24l5-12 7 6 7-6 5 12z\" fill=\"#050201\"></path> <circle class=\"animate-pulse\" cx=\"30\" cy=\"19\" fill=\"#4ade80\" r=\"1.8\"></circle> <circle class=\"animate-pulse\" cx=\"40\" cy=\"19\" fill=\"#4ade80\" r=\"1.8\"></circle> <!-- Cursed Green Syntax / Eye runes --> <path d=\"M22 33l4 4-4 4\" stroke=\"#4ade80\" stroke-linecap=\"round\" stroke-width=\"1.8\"></path> <line stroke=\"#4ade80\" stroke-dasharray=\"2 3\" stroke-width=\"1.8\" x1=\"30\" x2=\"42\" y1=\"37\" y2=\"37\"></line> <circle cx=\"49\" cy=\"37\" fill=\"#ef4444\" r=\"1.2\"></circle> <!-- Pentagram corner seal --> <path d=\"M35 44l1 3 3-2-2 3 3 2-4 0-1 3-1-3-4 0 3-2-2-3 3 2z\" fill=\"#bd6e1a\" opacity=\"0.6\"></path> </svg>", "1": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Floating parchment window --> <rect fill=\"#170904\" height=\"30\" rx=\"3\" stroke=\"#ffaa2b\" stroke-width=\"1.5\" width=\"42\" x=\"14\" y=\"14\"></rect> <line stroke=\"#ffaa2b\" stroke-width=\"1.2\" x1=\"14\" x2=\"56\" y1=\"22\" y2=\"22\"></line> <circle cx=\"19\" cy=\"18\" fill=\"#ef4444\" r=\"1.5\"></circle> <circle cx=\"24\" cy=\"18\" fill=\"#ffaa2b\" r=\"1.5\"></circle> <!-- Scroll text runes --> <line stroke=\"#bd6e1a\" stroke-linecap=\"round\" stroke-width=\"1.8\" x1=\"20\" x2=\"38\" y1=\"28\" y2=\"28\"></line> <line stroke=\"#bd6e1a\" stroke-linecap=\"round\" stroke-width=\"1.8\" x1=\"20\" x2=\"32\" y1=\"33\" y2=\"33\"></line> <!-- Bleeding Raven Quill Pen --> <path d=\"M48 10c-3 10-14 22-14 26 2-1 6-2 9-5 3-4 6-12 5-21z\" fill=\"#0d0402\" stroke=\"#ffaa2b\" stroke-width=\"1.2\"></path> <!-- Blood drop into sacrificial altar bowl --> <path d=\"M34 38c0 2-2 4-2 4s-2-2-2-4a2 2 0 0 1 4 0z\" fill=\"#ef4444\"></path> <path d=\"M24 48h22c0 5-4 8-11 8s-11-3-11-8z\" fill=\"#3b1307\" stroke=\"#ffaa2b\" stroke-width=\"1.5\"></path> </svg>", "2": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Wooden bone matchstick --> <line stroke=\"#d97706\" stroke-linecap=\"round\" stroke-width=\"3.5\" x1=\"16\" x2=\"38\" y1=\"52\" y2=\"30\"></line> <circle cx=\"41\" cy=\"27\" fill=\"#b91c1c\" r=\"5\"></circle> <!-- Raging occult flame --> <path d=\"M42 22c-3-9 4-15 9-18 1 7 8 10 7 16 3-3 5-7 5-7 2 6 0 14-8 14-6 0-10-3-13-5z\" fill=\"#ffaa2b\" stroke=\"#ef4444\" stroke-width=\"1.2\"></path> <circle cx=\"48\" cy=\"18\" fill=\"#fef08a\" r=\"2.5\"></circle> <!-- Dev git branch node burning --> <circle cx=\"22\" cy=\"24\" r=\"3\" stroke=\"#ffaa2b\" stroke-width=\"1.5\"></circle> <circle cx=\"30\" cy=\"16\" r=\"3\" stroke=\"#ef4444\" stroke-width=\"1.5\"></circle> <line stroke=\"#ffaa2b\" stroke-width=\"1.5\" x1=\"24\" x2=\"28\" y1=\"22\" y2=\"18\"></line> <!-- Sparkles & ash --> <circle cx=\"56\" cy=\"14\" fill=\"#ffedd5\" r=\"1\"></circle> <circle cx=\"59\" cy=\"26\" fill=\"#ffedd5\" r=\"1.2\"></circle> </svg>", "3": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Left glowing demonic rune button --> <circle cx=\"23\" cy=\"35\" fill=\"url(#goldGradient)\" r=\"11\" stroke=\"#ffd54f\" stroke-width=\"2\"></circle> <path d=\"M22 28l-3 7h6l-3 7\" stroke=\"#1f0a03\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\"></path> <!-- Demonic Lightning discharge linking them --> <path d=\"M33 32l6-5-3 8 7-3-8 10 3-6-5 4z\" fill=\"#ffe082\" stroke=\"#ff9100\" stroke-width=\"0.8\"></path> <!-- Right shattered button exploding into shrapnel --> <circle cx=\"48\" cy=\"35\" fill=\"#2d1007\" r=\"10\" stroke=\"#b71c1c\" stroke-dasharray=\"4 2\" stroke-width=\"1.8\"></circle> <path d=\"M45 28l3 5-4 4 5 5\" stroke=\"#ef4444\" stroke-linecap=\"round\" stroke-width=\"2\"></path> <!-- Flying runic sparks --> <circle cx=\"42\" cy=\"18\" fill=\"#ffd54f\" r=\"1.5\"></circle> <circle cx=\"58\" cy=\"24\" fill=\"#ff7043\" r=\"1.8\"></circle> <circle cx=\"56\" cy=\"46\" fill=\"#ffd54f\" r=\"1.2\"></circle> <defs> <radialgradient cx=\"50%\" cy=\"30%\" id=\"goldGradient\" r=\"70%\"> <stop offset=\"0%\" stop-color=\"#fff59d\"></stop> <stop offset=\"50%\" stop-color=\"#ffb300\"></stop> <stop offset=\"100%\" stop-color=\"#b26a00\"></stop> </radialgradient> </defs> </svg>", "5": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Demonic Bat Wings --> <path d=\"M30 38c-8-8-18-6-20 4 6 0 10 4 12 8\" fill=\"#1b0804\" stroke=\"#e5333b\" stroke-width=\"1.3\"></path> <path d=\"M42 26c8-8 18-6 20 4-6 0-10 4-12 8\" fill=\"#1b0804\" stroke=\"#e5333b\" stroke-width=\"1.3\"></path> <!-- Rocket Body plunging down --> <path d=\"M50 15c-11 3-20 12-22 23l7 7c11-2 20-11 23-22-1-3-5-7-8-8z\" fill=\"#0d0302\" stroke=\"#ffaa2b\" stroke-width=\"1.6\"></path> <!-- Porthole skull --> <circle cx=\"43\" cy=\"24\" fill=\"#ff4d4d\" r=\"3\"></circle> <!-- Underworld Flame Exhaust --> <path d=\"M26 44l-11 11 11-4 3 5 4-10z\" fill=\"#ff9d2e\"></path> <path d=\"M24 46l-6 6 6-2 2 3z\" fill=\"#ffffff\"></path> <!-- Zero Tests talisman --> <rect fill=\"#2b0e07\" height=\"8\" rx=\"1\" stroke=\"#ffaa2b\" stroke-width=\"1\" width=\"16\" x=\"36\" y=\"48\"></rect> <text fill=\"#ffd99f\" font-family=\"'Cinzel', serif\" font-size=\"6\" x=\"39\" y=\"54\">0 TESTS</text> </svg>", "8": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- CRT monitor --> <rect fill=\"#0d0402\" height=\"22\" rx=\"2\" stroke=\"#783e18\" stroke-width=\"1.5\" width=\"34\" x=\"18\" y=\"34\"></rect> <line stroke=\"#783e18\" stroke-width=\"2.5\" x1=\"28\" x2=\"42\" y1=\"56\" y2=\"56\"></line> <!-- Ghost Ghoul Ascending --> <path d=\"M35 12c-7 0-12 5-12 12 0 9 12 14 12 14s12-5 12-14c0-7-5-12-12-12z\" fill=\"#f8fafc\" opacity=\"0.9\"></path> <circle cx=\"31\" cy=\"21\" fill=\"#090302\" r=\"2\"></circle> <circle cx=\"39\" cy=\"21\" fill=\"#090302\" r=\"2\"></circle> <ellipse cx=\"35\" cy=\"28\" fill=\"#090302\" rx=\"2.5\" ry=\"3.5\"></ellipse> <!-- Floating Exorcism Talismans --> <rect fill=\"#fef08a\" height=\"12\" stroke=\"#d97706\" stroke-width=\"0.8\" width=\"6\" x=\"12\" y=\"24\"></rect> <text fill=\"#b91c1c\" font-size=\"7\" x=\"13\" y=\"32\">敕</text> <rect fill=\"#fef08a\" height=\"12\" stroke=\"#d97706\" stroke-width=\"0.8\" width=\"6\" x=\"52\" y=\"24\"></rect> <text fill=\"#b91c1c\" font-size=\"7\" x=\"53\" y=\"32\">符</text> </svg>", "13": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Mausoleum headstone --> <path d=\"M22 56V26c0-7 6-12 13-12s13 5 13 12v30H22z\" fill=\"#140404\" stroke=\"#e52c34\" stroke-width=\"1.8\"></path> <!-- R.I.P Legacy Code Latin --> <path d=\"M35 22v10M30 27h10\" stroke=\"#ff7377\" stroke-linecap=\"round\" stroke-width=\"1.5\"></path> <text fill=\"#e52c34\" font-family=\"'Cinzel', serif\" font-size=\"6\" x=\"27\" y=\"42\">LEGACY</text> <!-- Barbed wire & cursed thorns wrapping it --> <path d=\"M19 46c7-3 14 3 21-2 5-3 8-1 12 1\" stroke=\"#ff4d4d\" stroke-width=\"1.2\"></path> <path d=\"M20 34c8 2 13-4 20 1 5 3 8-1 11-2\" stroke=\"#ff4d4d\" stroke-width=\"1.2\"></path> <!-- Holy water flask shattering --> <circle cx=\"16\" cy=\"22\" fill=\"#38bdf8\" opacity=\"0.8\" r=\"3.5\"></circle> <path d=\"M16 16v3\" stroke=\"#e0f2fe\" stroke-width=\"1.5\"></path> <!-- Ground blood pool --> <ellipse cx=\"35\" cy=\"56\" fill=\"#450a0a\" rx=\"20\" ry=\"4\"></ellipse> </svg>", "20": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" viewbox=\"0 0 70 70\"> <!-- Blood Portal Ring --> <ellipse cx=\"35\" cy=\"35\" fill=\"#200606\" rx=\"22\" ry=\"14\" stroke=\"#e52c34\" stroke-dasharray=\"3 2\" stroke-width=\"1.5\"></ellipse> <ellipse cx=\"35\" cy=\"35\" rx=\"15\" ry=\"9\" stroke=\"#ffaa2b\" stroke-width=\"1\"></ellipse> <!-- Shadow Horned Vendor Entity --> <path d=\"M35 18c-5 0-9 6-9 14 0 6 9 16 9 16s9-10 9-16c0-8-4-14-9-14z\" fill=\"#090202\" stroke=\"#ff4d4d\" stroke-width=\"1.2\"></path> <!-- Vendor horns --> <path d=\"M30 22l-4-6 6 2\" stroke=\"#ffaa2b\" stroke-width=\"1.5\"></path> <path d=\"M40 22l4-6-6 2\" stroke=\"#ffaa2b\" stroke-width=\"1.5\"></path> <!-- Eldritch Eyes gazing --> <circle cx=\"20\" cy=\"24\" fill=\"#ffaa2b\" r=\"2\"></circle> <circle cx=\"50\" cy=\"24\" fill=\"#ffaa2b\" r=\"2\"></circle> <circle cx=\"53\" cy=\"42\" fill=\"#e52c34\" r=\"1.5\"></circle> <circle cx=\"17\" cy=\"42\" fill=\"#e52c34\" r=\"1.5\"></circle> </svg>", "40": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"-3.0 -0.3 76.1 76.1\"> <defs> <radialGradient cx=\"50%\" cy=\"50%\" id=\"magmaGlow\" r=\"50%\"> <stop offset=\"0%\" stop-color=\"#fffbeb\"></stop> <stop offset=\"35%\" stop-color=\"#ffaa2b\"></stop> <stop offset=\"70%\" stop-color=\"#e52c34\"></stop> <stop offset=\"100%\" stop-color=\"#660a0a\" stop-opacity=\"0\"></stop> </radialGradient> </defs> <!-- Magma backglow aura --> <ellipse cx=\"35\" cy=\"38\" fill=\"url(#magmaGlow)\" opacity=\"0.45\" rx=\"16\" ry=\"24\"></ellipse> <!-- Left Monolith Slab (Basalt rock face with elder runes) --> <path d=\"M19 59L23 15L31 13L26 25L32 36L25 48L28 59H19Z\" fill=\"#130504\" stroke=\"#a32228\" stroke-linejoin=\"round\" stroke-width=\"1.6\"></path> <!-- Right Monolith Slab (Basalt rock face splitting away) --> <path d=\"M51 59L47 15L39 13L44 25L38 36L45 48L42 59H51Z\" fill=\"#130504\" stroke=\"#a32228\" stroke-linejoin=\"round\" stroke-width=\"1.6\"></path> <!-- Sacrificial Elder Runes carved on stone faces --> <!-- Left face runes: ᚦ, ᚱ --> <path d=\"M23 28v8M23 29c3 1 3 4 0 5\" stroke=\"#ff7377\" stroke-linecap=\"round\" stroke-width=\"0.9\"></path> <path d=\"M22 44v7M22 45c3 0 3 3 0 3m0 0l3 3\" stroke=\"#ff7377\" stroke-linecap=\"round\" stroke-width=\"0.85\"></path> <!-- Right face runes: ᛉ, ᛋ --> <path d=\"M46 28v8M43 30l3 3 3-3\" stroke=\"#ff7377\" stroke-linecap=\"round\" stroke-width=\"0.9\"></path> <path d=\"M47 43l-3 3 3 3-3 3\" stroke=\"#ff7377\" stroke-linecap=\"round\" stroke-width=\"0.85\"></path> <!-- Core Fissure Molten Lava stream (Pulsating) --> <path class=\"anim-magma-pulse\" d=\"M31 13L26 25L32 36L25 48L28 59\" stroke=\"#ffaa2b\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"3\"></path> <path class=\"anim-magma-pulse\" d=\"M39 13L44 25L38 36L45 48L42 59\" stroke=\"#ffaa2b\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"></path> <!-- White-hot molten core line --> <path class=\"anim-magma-pulse\" d=\"M35 14L30 26L35 36L30 48L35 59\" stroke=\"#fff4cc\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.2\"></path> <!-- Drifting molten ember sparks floating upward --> <circle class=\"anim-ember-1\" cx=\"33\" cy=\"46\" fill=\"#fef08a\" r=\"1.5\"></circle> <circle class=\"anim-ember-2\" cx=\"37\" cy=\"34\" fill=\"#ffaa2b\" r=\"1.3\"></circle> <circle class=\"anim-ember-3\" cx=\"31\" cy=\"22\" fill=\"#ffffff\" r=\"1.1\"></circle> <!-- Ground scorched earth platform --> <ellipse cx=\"35\" cy=\"60\" fill=\"#070202\" rx=\"22\" ry=\"3.5\" stroke=\"#781418\" stroke-width=\"1\"></ellipse> </svg>", "100": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"-5.3 2.1 80.9 80.9\"> <defs> <radialGradient cx=\"50%\" cy=\"60%\" id=\"infernoBackdrop\" r=\"50%\"> <stop offset=\"0%\" stop-color=\"#ffedd5\" stop-opacity=\"0.6\"></stop> <stop offset=\"30%\" stop-color=\"#ff9d2e\" stop-opacity=\"0.5\"></stop> <stop offset=\"70%\" stop-color=\"#d9232c\" stop-opacity=\"0.4\"></stop> <stop offset=\"100%\" stop-color=\"#300507\" stop-opacity=\"0\"></stop> </radialGradient> <linearGradient id=\"flameGradMain\" x1=\"0%\" x2=\"0%\" y1=\"100%\" y2=\"0%\"> <stop offset=\"0%\" stop-color=\"#780a0a\"></stop> <stop offset=\"35%\" stop-color=\"#e52c34\"></stop> <stop offset=\"75%\" stop-color=\"#ffaa2b\"></stop> <stop offset=\"100%\" stop-color=\"#fffbeb\"></stop> </linearGradient> </defs> <!-- Inferno Ambient Glow Core --> <ellipse cx=\"35\" cy=\"42\" fill=\"url(#infernoBackdrop)\" rx=\"24\" ry=\"18\"></ellipse> <!-- Background Raging Layered Fire Wall --> <g class=\"anim-inferno-flames\" opacity=\"0.95\"> <path d=\"M8 60 C9 44 14 38 18 46 C21 34 27 28 29 42 C33 24 41 20 44 38 C47 26 53 30 55 45 C58 35 63 42 63 60 Z\" fill=\"url(#flameGradMain)\"></path> <!-- Inner high-heat golden licking flame tongues --> <path d=\"M13 60 C15 48 19 44 22 51 C25 40 31 36 34 47 C37 32 44 30 46 44 C48 37 53 41 55 52 C57 46 60 50 60 60 Z\" fill=\"#fff2a8\" opacity=\"0.85\"></path> <path d=\"M17 60 C20 52 23 48 26 54 C29 46 34 42 36 50 C40 38 44 38 46 51 C48 45 52 48 53 60 Z\" fill=\"#ffffff\" opacity=\"0.7\"></path> </g> <!-- Burning Wooden Desk / Dev Altar Bench --> <rect fill=\"#1c0805\" height=\"9\" rx=\"1.5\" stroke=\"#a32228\" stroke-width=\"1.4\" width=\"46\" x=\"12\" y=\"50\"></rect> <line opacity=\"0.6\" stroke=\"#ffaa2b\" stroke-width=\"0.8\" x1=\"14\" x2=\"56\" y1=\"53\" y2=\"53\"></line> <!-- Table embers & burning char edges --> <circle cx=\"16\" cy=\"50\" fill=\"#ffaa2b\" r=\"1.2\"></circle> <circle cx=\"54\" cy=\"50\" fill=\"#ffaa2b\" r=\"1.2\"></circle> <!-- The Horned Developer (Calmly sitting, serene 'This is fine' posture) --> <g class=\"anim-calm-sipper\"> <!-- Relaxed Body / Robe --> <path d=\"M26 44 C26 39 31 37 35 37 C39 37 44 39 44 44 L46 52 H24 Z\" fill=\"#0d0303\" stroke=\"#ffaa2b\" stroke-width=\"1.2\"></path> <!-- Demonic Horns on head --> <path d=\"M31 31 C28 27 25 24 23 25 C23 28 27 31 29 33 Z\" fill=\"#d9232c\" stroke=\"#ffaa2b\" stroke-width=\"0.9\"></path> <path d=\"M39 31 C42 27 45 24 47 25 C47 28 43 31 41 33 Z\" fill=\"#d9232c\" stroke=\"#ffaa2b\" stroke-width=\"0.9\"></path> <!-- Developer Head --> <ellipse cx=\"35\" cy=\"33\" fill=\"#180605\" rx=\"6\" ry=\"6.5\" stroke=\"#ffaa2b\" stroke-width=\"1.3\"></ellipse> <!-- Peaceful serene shut eyes (blissful calm in chaos) --> <path d=\"M32 32.5 Q33.5 34 35 32.5\" fill=\"none\" stroke=\"#ffe082\" stroke-linecap=\"round\" stroke-width=\"1.1\"></path> <path d=\"M36 32.5 Q37.5 34 39 32.5\" fill=\"none\" stroke=\"#ffe082\" stroke-linecap=\"round\" stroke-width=\"1.1\"></path> <!-- Tiny tranquil smile --> <path d=\"M34 36.5 Q35.5 37.8 37 36.5\" fill=\"none\" stroke=\"#ff9d2e\" stroke-linecap=\"round\" stroke-width=\"1\"></path> <!-- Left arm raised holding steaming coffee mug --> <path d=\"M28 42 C24 42 21 44 24 47 L27 47\" stroke=\"#ffaa2b\" stroke-linecap=\"round\" stroke-width=\"1.6\"></path> <!-- The Steaming Coffee Mug --> <rect fill=\"#fff2d8\" height=\"6.5\" rx=\"1\" stroke=\"#a32228\" stroke-width=\"1\" width=\"6.5\" x=\"20\" y=\"43\"></rect> <!-- Mug Handle --> <path d=\"M20 44.5 C18 44.5 18 47.5 20 47.5\" fill=\"none\" stroke=\"#a32228\" stroke-width=\"1\"></path> <!-- Rising delicate coffee steam --> <g class=\"anim-mug-steam\"> <path d=\"M22 41 C21 38 24 36 23 33\" stroke=\"#fffbeb\" stroke-linecap=\"round\" stroke-width=\"1.1\"></path> <path d=\"M25 41 C26 38 23 36 24 33\" stroke=\"#fed7aa\" stroke-linecap=\"round\" stroke-width=\"1\"></path> </g> </g> <!-- Foreground Flame Crests framing the desk --> <path d=\"M8 60 C11 53 14 54 16 60\" fill=\"none\" stroke=\"#ffaa2b\" stroke-width=\"1.6\"></path> <path d=\"M54 60 C56 52 60 53 62 60\" fill=\"none\" stroke=\"#ffaa2b\" stroke-width=\"1.6\"></path> <line stroke=\"#781418\" stroke-width=\"2\" x1=\"10\" x2=\"60\" y1=\"60\" y2=\"60\"></line> </svg>", "☕": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"-5.4 -5.3 80.7 80.7\"> <defs> <!-- Radiant Soul Infusion Aura --> <radialGradient cx=\"50%\" cy=\"45%\" id=\"soulReviveAura\" r=\"55%\"> <stop offset=\"0%\" stop-color=\"#67e8f9\" stop-opacity=\"0.95\"></stop> <stop offset=\"30%\" stop-color=\"#fde047\" stop-opacity=\"0.75\"></stop> <stop offset=\"65%\" stop-color=\"#c084fc\" stop-opacity=\"0.4\"></stop> <stop offset=\"100%\" stop-color=\"#18082e\" stop-opacity=\"0\"></stop> </radialGradient> <linearGradient id=\"chaliceMetal\" x1=\"0%\" x2=\"100%\" y1=\"0%\" y2=\"100%\"> <stop offset=\"0%\" stop-color=\"#2e1065\"></stop> <stop offset=\"50%\" stop-color=\"#170628\"></stop> <stop offset=\"100%\" stop-color=\"#0a0214\"></stop> </linearGradient> </defs> <!-- Spectral Silhouette / Revitalizing Husk Behind Cup --> <g class=\"anim-husk-glow\"> <!-- Faint translucent human spirit head & shoulders absorbing the vitality --> <circle cx=\"35\" cy=\"18\" fill=\"none\" r=\"8\" stroke=\"#38bdf8\" stroke-dasharray=\"2 2\" stroke-width=\"1.2\"></circle> <path d=\"M24 32 C24 24 29 23 35 23 C41 23 46 24 46 32\" fill=\"none\" stroke=\"#38bdf8\" stroke-dasharray=\"2 3\" stroke-width=\"1.1\"></path> </g> <!-- Returning Soul Energy Streams spiraling down into the chalice --> <g class=\"anim-soul-infusion\"> <path d=\"M23 12 C30 18 25 24 33 27\" stroke=\"#38bdf8\" stroke-linecap=\"round\" stroke-width=\"1.8\"></path> <path d=\"M47 11 C38 17 43 23 37 27\" stroke=\"#fde047\" stroke-linecap=\"round\" stroke-width=\"1.8\"></path> <path d=\"M35 8 C33 16 36 21 35 28\" stroke=\"#e9d5ff\" stroke-linecap=\"round\" stroke-width=\"1.5\"></path> </g> <!-- Radiant Soul Core Orb / Essence Descending into Cup (Heart/Soul restoring life) --> <g class=\"anim-soul-core\"> <circle cx=\"35\" cy=\"27\" fill=\"url(#soulReviveAura)\" r=\"11\"></circle> <circle cx=\"35\" cy=\"27\" fill=\"#ffffff\" r=\"4.5\"></circle> <circle cx=\"35\" cy=\"27\" fill=\"#67e8f9\" r=\"2.5\"></circle> <!-- Radiating spirit sparkles --> <path d=\"M35 17 V21 M35 33 V37 M25 27 H29 M41 27 H45\" stroke=\"#fef08a\" stroke-linecap=\"round\" stroke-width=\"1.3\"></path> <circle cx=\"28\" cy=\"20\" fill=\"#67e8f9\" r=\"1\"></circle> <circle cx=\"42\" cy=\"20\" fill=\"#fde047\" r=\"1.2\"></circle> <circle cx=\"30\" cy=\"33\" fill=\"#ffffff\" r=\"0.9\"></circle> <circle cx=\"40\" cy=\"33\" fill=\"#c084fc\" r=\"1\"></circle> </g> <!-- Gothic Obsidian Chalice Vessel (Sleek fluted goblet with NO eye sigil) --> <path d=\"M20 28 H50 C50 43 42 49 35 49 C28 49 20 43 20 28 Z\" fill=\"url(#chaliceMetal)\" stroke=\"#c084fc\" stroke-width=\"1.8\"></path> <!-- Chalice Rim with golden spirit nectar sheen --> <ellipse cx=\"35\" cy=\"28\" fill=\"#2e1065\" rx=\"15\" ry=\"4.5\" stroke=\"#fde047\" stroke-width=\"1.4\"></ellipse> <!-- Molten Celestial Soul Liquid pool inside rim --> <ellipse cx=\"35\" cy=\"28\" fill=\"#38bdf8\" opacity=\"0.85\" rx=\"12\" ry=\"3\"></ellipse> <!-- Fluted Gothic Chalice Ribbed Stem & Filigree Node --> <path d=\"M33 49 H37 V57 H33 Z\" fill=\"#170628\" stroke=\"#a855f7\" stroke-width=\"1.6\"></path> <circle cx=\"35\" cy=\"53\" fill=\"#fde047\" r=\"3\" stroke=\"#c084fc\" stroke-width=\"1.2\"></circle> <!-- Sacred Chalice Base with runic stepped pedestal --> <path d=\"M23 62 C27 58 30 57 35 57 C40 57 43 58 47 62 H23 Z\" fill=\"url(#chaliceMetal)\" stroke=\"#c084fc\" stroke-width=\"1.8\"></path> <line stroke=\"#fde047\" stroke-width=\"1.5\" x1=\"21\" x2=\"49\" y1=\"62\" y2=\"62\"></line> <!-- Ornate filigree engraving on goblet wall (Clean filigree brackets, strictly no eye) --> <path d=\"M27 36 C31 42 39 42 43 36\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"1.2\"></path> <circle cx=\"35\" cy=\"42\" fill=\"#38bdf8\" r=\"1.8\"></circle> </svg>", "?": "<svg class=\"ill\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"-2.5 0.0 73.9 73.9\"> <defs> <radialGradient cx=\"20%\" cy=\"50%\" id=\"voidTunnelGlow\" r=\"60%\"> <stop offset=\"0%\" stop-color=\"#581c87\" stop-opacity=\"0.6\"></stop> <stop offset=\"60%\" stop-color=\"#1e0538\" stop-opacity=\"0.3\"></stop> <stop offset=\"100%\" stop-color=\"#08020f\" stop-opacity=\"0\"></stop> </radialGradient> </defs> <!-- Background Void Whirlwind / Panic Tunnel --> <ellipse cx=\"25\" cy=\"35\" fill=\"url(#voidTunnelGlow)\" rx=\"22\" ry=\"16\"></ellipse> <!-- Scattered Cloud of Spectral Question Marks Kicked Up Behind the Fleeing Dev --> <g class=\"anim-trail-q1\"> <text fill=\"#e9d5ff\" filter=\"drop-shadow(0 0 4px #c084fc)\" font-family=\"'MedievalSharp', cursive\" font-size=\"14\" font-weight=\"bold\" x=\"16\" y=\"26\">?</text> </g> <g class=\"anim-trail-q2\"> <text fill=\"#c084fc\" filter=\"drop-shadow(0 0 5px #9333ea)\" font-family=\"'Cinzel Decorative', 'MedievalSharp', cursive\" font-size=\"16\" font-weight=\"900\" x=\"24\" y=\"20\">?</text> </g> <g class=\"anim-trail-q3\"> <text fill=\"#a855f7\" font-family=\"'MedievalSharp', cursive\" font-size=\"11\" font-weight=\"bold\" opacity=\"0.85\" x=\"12\" y=\"38\">?</text> </g> <g class=\"anim-trail-q1\" style=\"animation-delay: 0.9s;\"> <text fill=\"#f3e8ff\" font-family=\"'MedievalSharp', cursive\" font-size=\"13\" font-weight=\"bold\" x=\"20\" y=\"46\">?</text> </g> <!-- Panic Dust Puffs at the Dev's Heels --> <g class=\"anim-dust-puff\"> <circle cx=\"33\" cy=\"56\" fill=\"#7e22ce\" opacity=\"0.5\" r=\"3\"></circle> <circle cx=\"29\" cy=\"54\" fill=\"#a855f7\" opacity=\"0.4\" r=\"2\"></circle> </g> <!-- Frantic Horizontal Wind / Speed Lines --> <line opacity=\"0.7\" stroke=\"#a855f7\" stroke-dasharray=\"3 3\" stroke-width=\"1.2\" x1=\"8\" x2=\"24\" y1=\"30\" y2=\"30\"></line> <line opacity=\"0.8\" stroke=\"#c084fc\" stroke-dasharray=\"4 2\" stroke-width=\"1.4\" x1=\"14\" x2=\"28\" y1=\"36\" y2=\"36\"></line> <line opacity=\"0.6\" stroke=\"#e9d5ff\" stroke-dasharray=\"2 3\" stroke-width=\"1\" x1=\"10\" x2=\"30\" y1=\"44\" y2=\"44\"></line> <!-- Panicked Sprinting Developer (Fleeing Right towards exit edge) --> <g class=\"anim-dev-flee\"> <!-- Wild Trailing Occult Cloak / Coat blowing violently backward --> <g class=\"anim-coat-trail\"> <path d=\"M44 32 C38 31 29 27 20 28 C26 34 32 35 38 37 Z\" fill=\"#2e1065\" stroke=\"#c084fc\" stroke-width=\"1.2\"></path> <path d=\"M43 35 C36 36 26 33 18 36 C24 41 33 41 40 42 Z\" fill=\"#3b0764\" stroke=\"#a855f7\" stroke-width=\"1.2\"></path> </g> <!-- Forward-leaning sprinting torso --> <path d=\"M40 32 L47 43 L43 45 L38 34 Z\" fill=\"#f3e8ff\" stroke=\"#c084fc\" stroke-width=\"1.2\"></path> <!-- Panicked Head tilted forward looking back/screaming into the void --> <circle cx=\"47\" cy=\"26\" fill=\"#f8fafc\" r=\"4.5\" stroke=\"#c084fc\" stroke-width=\"1.4\"></circle> <!-- Wide terrified eyes & agape mouth --> <circle cx=\"45.5\" cy=\"25.5\" fill=\"#0f021f\" r=\"1\"></circle> <circle cx=\"48.5\" cy=\"25.5\" fill=\"#0f021f\" r=\"1\"></circle> <ellipse cx=\"47\" cy=\"28.5\" fill=\"#0f021f\" rx=\"1.2\" ry=\"1.6\"></ellipse> <!-- Arms pumping frantically in full sprint --> <!-- Forward reaching arm --> <path d=\"M44 33 L53 31 L58 35\" stroke=\"#f3e8ff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path> <!-- Back arm counter-balance --> <path d=\"M41 34 L34 39 L31 36\" stroke=\"#e9d5ff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.8\"></path> <!-- Sprinting Legs --> <!-- Front extended leg driving forward --> <path d=\"M46 43 L54 48 L62 55\" stroke=\"#f8fafc\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\"></path> <!-- Back leg kicking up behind in stride --> <path d=\"M42 44 L35 50 L31 46\" stroke=\"#e9d5ff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.2\"></path> </g> <!-- Exit Boundary Threshold Line --> <line opacity=\"0.5\" stroke=\"#c084fc\" stroke-dasharray=\"3 3\" stroke-width=\"1.2\" x1=\"64\" x2=\"64\" y1=\"15\" y2=\"60\"></line> <path d=\"M61 58 H67\" stroke=\"#a855f7\" stroke-linecap=\"round\" stroke-width=\"2\"></path> </svg>"};
+const CUP = "<svg class=\"tagicon\" aria-hidden=\"true\" focusable=\"false\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewbox=\"0 0 24 24\"> <path d=\"M18 8h1a4 4 0 0 1 0 8h-1\"></path> <path d=\"M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z\"></path> <line x1=\"6\" x2=\"6\" y1=\"1\" y2=\"4\"></line> <line x1=\"10\" x2=\"10\" y1=\"1\" y2=\"4\"></line> <line x1=\"14\" x2=\"14\" y1=\"1\" y2=\"4\"></line> </svg>";
+
+/* ---------- ntfy.sh event log (no signup, browser-friendly) ---------- */
+const NTFY = "https://ntfy.sh/";
+const topicOf = sid => "devils-poker-" + sid;
+const rid = () => Math.random().toString(36).slice(2, 10);
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+// Everyone replays the same events in the same order, so everyone sees the same state.
+function reduce(events) {
+  const s = { round: 1, revealed: false, participants: {} };
+  const ps = s.participants;
+  for (const e of events) {
+    if (e.t === "join" && !ps[e.id]) {
+      const used = new Set(Object.values(ps).map(p => p.name));
+      let name = e.name;
+      while (used.has(name)) name += " II";
+      ps[e.id] = { name, vote: null };
+    } else if (e.t === "vote" && ps[e.id] && e.r === s.round && !s.revealed) {
+      ps[e.id].vote = e.v;
+    } else if (e.t === "reveal" && e.r === s.round) {
+      s.revealed = true;
+    } else if (e.t === "new" && e.r === s.round) {
+      s.round++; s.revealed = false;
+      Object.values(ps).forEach(p => { p.vote = null; });
+    } else if (e.t === "leave") {
+      delete ps[e.id];
+    }
+  }
+  return s;
+}
+
+function identity(sid) {
+  const key = "devils:" + sid;
+  let ident = store.get(key);
+  if (!ident) {
+    ident = { id: "c" + rid(), name: NAMES[Math.floor(Math.random() * NAMES.length)] };
+    store.set(key, ident);
+  }
+  return ident;
+}
+
+function Game({ music }) {
+  const [sid, setSid] = useState(() => new URLSearchParams(location.search).get("s"));
+  const [events, setEvents] = useState([]);
+  const [conn, setConn] = useState("connecting");
+  const [copied, setCopied] = useState(false);
+  const busy = false;
+  const me = useMemo(() => (sid ? identity(sid) : null), [sid]);
+  const session = useMemo(() => reduce(events), [events]);
+  const err = conn === "down"
+    ? "Can't reach ntfy.sh. Check your connection or ad blocker. The app keeps retrying." : null;
+
+  const link = sid ? `${location.origin}${location.pathname}?s=${sid}` : "";
+
+  const send = ev => fetch(NTFY + topicOf(sid), {
+    method: "POST", body: JSON.stringify({ ...ev, eid: rid() }),
+  }).catch(() => setConn("down"));
+
+  function summon() {
+    const id = rid() + rid();
+    history.replaceState(null, "", `?s=${id}`);
+    setSid(id);
+  }
+
+  // live stream: replays the whole session log, then stays open
+  useEffect(() => {
+    if (!sid) return;
+    const seen = new Set();
+    const es = new EventSource(`${NTFY}${topicOf(sid)}/sse?since=all`);
+    es.onopen = () => setConn("live");
+    es.onerror = () => setConn("down");
+    es.onmessage = m => {
+      try {
+        const d = JSON.parse(m.data);
+        if (d.event && d.event !== "message") return;
+        const ev = JSON.parse(d.message);
+        if (!ev.eid || seen.has(ev.eid)) return;
+        seen.add(ev.eid);
+        setEvents(prev => [...prev, ev]);
+      } catch {}
+    };
+    send({ t: "join", id: me.id, name: me.name }); // ignored if already joined
+    return () => es.close();
+  }, [sid]);
+
+  const vote = v => { if (!session.revealed) send({ t: "vote", id: me.id, v, r: session.round }); };
+  const reveal = () => send({ t: "reveal", r: session.round });
+  const newRound = () => send({ t: "new", r: session.round });
+  const banish = id => send({ t: "leave", id });
+  async function copy() {
+    try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {}
+  }
+
+  /* ---------- landing ---------- */
+  if (!sid) {
+    return (
+      <main className="wrap landing">
+        <div className="brand">
+          <MusicToggle music={music} />
+          <div className="titlerow"><h1>DEVils Poker</h1><span className="tag">Estimation Grimoire</span></div>
+        </div>
+        <p className="sub">Estimate at your own risk. No refunds, no story points held sacred.</p>
+        <button type="button" className="btn rev" onClick={summon}><span>Start a session</span></button>
+        <p className="sub" style={{ marginTop: 16 }}>You'll get a link to share. Everyone who opens it joins as a random devil.</p>
+        {err && <div className="err" role="alert">{err}</div>}
+      </main>
+    );
+  }
+
+  /* ---------- session ---------- */
+  const parts = Object.entries(session.participants);
+  const total = parts.length;
+  const voted = parts.filter(([, p]) => p.vote != null).length;
+  const denom = Math.max(EXPECTED, total);
+  const pct = Math.round((voted / denom) * 100);
+  const everyone = total > 1 && voted === total;
+  const sel = session.participants[me.id]?.vote;
+  const flames = Math.round(pct / 100 * 14);
+
+  const invite = (
+    <button type="button" className="btn inv" onClick={copy}>
+      <span aria-hidden="true">✦</span><span>{copied ? "Link copied" : "Invite the coven"}</span>
+      <span className="pill" aria-label={`${total} of ${EXPECTED} joined`}>{total}/{EXPECTED}</span>
+    </button>
+  );
+
+  return (
+    <div className="wrap">
+      <header className={"head" + (session.revealed ? " center" : "")}>
+        <div className="brand">
+          <MusicToggle music={music} />
+          <div>
+            <div className="titlerow"><h1>DEVils Poker</h1><span className="tag">Estimation Grimoire</span></div>
+            <p className="sub">Round {session.round}, you are <b>{session.participants[me.id]?.name || me.name}</b> <span className="rank">[Archdevil of Sprints]</span></p>
+          </div>
+        </div>
+        {!session.revealed && (
+          <div className="acts">
+            {invite}
+            <button type="button" className={"btn rev" + (everyone ? " ready" : "")} onClick={reveal} disabled={voted === 0}>
+              <span>Reveal Votes</span><span className="pill">Unseal</span>
+            </button>
+          </div>
+        )}
+      </header>
+      {err && <div className="err" role="alert">{err}</div>}
+
+      <main>
+        {session.revealed ? <Reveal session={session} me={me} onNew={newRound} invite={invite} /> : (<>
+          <div className="coven">
+            <div className="covenl">
+              <span className="lbl">❖ The coven:</span>
+              <ul className="people">
+                {parts.map(([id, p]) => (
+                  <li key={id} className={"chip" + (id === me.id ? " me" : "") + (p.vote != null ? " done" : "")}>
+                    <span className="dot" aria-hidden="true" />
+                    <span>{p.name} <em>({id === me.id ? "you, " : ""}{p.vote != null ? "voted" : "pondering…"})</em></span>
+                    {p.vote == null && id !== me.id && (
+                      <button type="button" className="x" title={`Banish ${p.name}`} aria-label={`Banish ${p.name}`} onClick={() => banish(id)}>×</button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="counts" role="status" aria-live="polite">
+              <span><strong>{voted} of {denom}</strong> souls cast</span><span aria-hidden="true">•</span>
+              <span><strong>{total} of {denom}</strong> in chamber</span>
+            </div>
+          </div>
+
+          <div className="burn">
+            <div className="track" role="progressbar" aria-label="Votes cast" aria-valuemin={0} aria-valuemax={denom} aria-valuenow={voted}>
+              <div className="fill" style={{ width: pct + "%" }}>
+                <div className="flames" aria-hidden="true">{Array.from({ length: flames }, (_, i) => <i key={i} />)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="deck" role="group" aria-label="Estimate cards">
+            {DECK.map(([v]) => <Card key={v} v={v} sel={sel === v} onClick={() => vote(v)} />)}
+          </div>
+        </>)}
+      </main>
+      {!session.revealed && <footer className="foot"><span aria-hidden="true">❖ </span>Pick a card. Pick another to change your mind. The veil remains unsevered until someone reveals.</footer>}
+    </div>
+  );
+}
+
+function Card({ v, sel, onClick }) {
+  const Tag = onClick ? "button" : "div";
+  return (
+    <Tag className={"pc t-" + tierOf(v) + (sel ? " sel" : "")} onClick={onClick} type={onClick ? "button" : undefined}
+      aria-pressed={onClick ? !!sel : undefined} aria-label={`${v === "☕" ? "Coffee" : v}: ${CARD[v].c}`}>
+      <span className="top">
+        <span className="num">
+          <span className="n">{v === "☕" ? <span dangerouslySetInnerHTML={{ __html: CUP }} /> : v}</span>
+        </span>
+        <span className="rune">{TAGS[v]}</span>
+      </span>
+      <span className="art" dangerouslySetInnerHTML={{ __html: ART[v] }} />
+      <span className="cap">{CARD[v].c}</span>
+    </Tag>
+  );
+}
+
+const ORDER = v => (/^\d+$/.test(v) ? Number(v) : v === "☕" ? 1000 : 1001);
+
+function Reveal({ session, me, onNew, invite }) {
+  const all = Object.entries(session.participants);
+  const cast = all.filter(([, p]) => p.vote != null).sort((a, b) => ORDER(a[1].vote) - ORDER(b[1].vote));
+  const missing = all.filter(([, p]) => p.vote == null).map(([, p]) => p.name);
+  const vals = [...new Set(cast.map(([, p]) => p.vote))];
+  const nums = cast.map(([, p]) => p.vote).filter(v => /^\d+$/.test(v)).map(Number);
+  const lo = Math.min(...nums), hi = Math.max(...nums);
+
+  let head, note;
+  if (!cast.length) { head = "Nobody voted"; note = "Start a new round and pick a card."; }
+  else if (vals.length === 1) { head = `Agreed: ${vals[0] === "☕" ? "coffee" : vals[0]}`; note = cast.length > 1 ? "The whole coven agrees." : "Just you so far."; }
+  else {
+    head = "No agreement yet";
+    const bits = [lo < hi
+      ? `Votes run from ${lo} to ${hi}. Ask the highest and lowest voters to explain, then vote again.`
+      : "Talk it through, then vote again."];
+    if (vals.includes("?") || vals.includes("☕")) bits.push("Someone needs more info first.");
+    note = bits.join(" ");
+  }
+
+  return (
+    <div className="stage">
+      <div className="verdict" role="status"><p className="big">{head}</p><p>{note}</p></div>
+      <div className="faces">
+        {vals.map((v, i) => (
+          <div key={v} className={"face" + (vals.length === 1 ? " solo" : "")} style={{ "--i": i }}>
+            <Card v={v} />
+            <div className="who">
+              {cast.filter(([, p]) => p.vote === v).map(([id, p]) => p.name + (id === me.id ? " (you)" : "")).join(", ")}
+            </div>
+          </div>
+        ))}
+      </div>
+      {missing.length > 0 && <p className="hint">Didn't vote: {missing.join(", ")}</p>}
+      <div className="acts" style={{ justifyContent: "center", marginTop: 32 }}>
+        <button type="button" className="btn rev" onClick={onNew}><span>New round</span></button>
+        {invite}
+      </div>
+    </div>
+  );
+}
+
+const TRACK = "spotify:track:5uP1WWp6LRSNUNvmzANBOK"; // Spooky, Scary Skeletons (Andrew Gold)
+
+// Spotify's player is only loaded once someone switches the music on.
+function useMusic() {
+  const [on, setOn] = useState(false);
+  const host = useRef(null);
+  const ctl = useRef(null);
+  const want = useRef(false);
+  function toggle() {
+    const next = !on;
+    want.current = next;
+    setOn(next);
+    if (ctl.current) { next ? ctl.current.play() : ctl.current.pause(); return; }
+    if (!next || document.getElementById("sp-api")) return;
+    window.onSpotifyIframeApiReady = api => {
+      api.createController(host.current, { uri: TRACK, width: "100%", height: 80 }, c => {
+        ctl.current = c;
+        c.addListener("ready", () => { if (want.current) c.play(); });
+        c.addListener("playback_update", e => {
+          const d = e.data || {};
+          // loop the track while music is on
+          if (want.current && d.isPaused && d.duration && d.position >= d.duration - 1000) { try { c.seek(0); c.resume(); } catch {} }
+        });
+      });
+    };
+    const sc = document.createElement("script");
+    sc.id = "sp-api"; sc.src = "https://open.spotify.com/embed/iframe-api/v1"; sc.async = true;
+    sc.onerror = () => { want.current = false; setOn(false); sc.remove(); };
+    document.body.appendChild(sc);
+  }
+  return { on, toggle, host };
+}
+
+function MusicToggle({ music }) {
+  const { on, toggle } = music;
+  return (
+    <button type="button" className="seal" onClick={toggle} aria-pressed={on}
+      aria-label={on ? "Turn music off" : "Turn music on"} title={on ? "Music on: Spooky, Scary Skeletons" : "Music off"}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+        {!on && <path d="M3 3l18 18" stroke="#ff7a80" />}
+      </svg>
+    </button>
+  );
+}
+
+function App() {
+  const music = useMusic();
+  return (
+    <>
+      <Game music={music} />
+      <div className={"sp" + (music.on ? " show" : "")}><div ref={music.host} /></div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
