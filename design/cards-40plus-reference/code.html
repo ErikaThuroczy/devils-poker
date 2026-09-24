@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEVils Poker - Dark Occult Estimation</title>
+<!-- Google Fonts: Medieval gothic, blackletter, occult runes, display -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&amp;family=Pirata+One&amp;family=UnifrakturMaguntia&amp;family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@600;700;800;900&amp;family=Plus+Jakarta+Sans:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols for spooky emblems -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hellbg: '#0c0503',
+            darkaltar: '#140805',
+            amberborder: '#ff9d2e',
+            brimstone: '#ffaa2b',
+            bloodred: '#961117',
+            hellfire: '#e52c34',
+            parchment: '#FFF2D8',
+            parchmentdim: '#d2b998',
+            runicviolet: '#a855f7',
+            covenpurple: '#6b21a8',
+          },
+          fontFamily: {
+            gothic: ['"UnifrakturMaguntia"', '"Pirata One"', 'serif'],
+            runic: ['"Cinzel Decorative"', '"MedievalSharp"', 'cursive'],
+            gothicbody: ['"MedievalSharp"', 'serif'],
+            cinzel: ['"Cinzel"', 'serif'],
+            sansui: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Atmospheric Ritual Chamber Backdrop with subtle gothic silhouettes and dark stone vignette */
+    body {
+      background-color: #0b0402;
+      background-image: 
+        radial-gradient(circle at 50% 12%, rgba(255, 120, 20, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(180, 20, 20, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 90% 90%, rgba(120, 30, 180, 0.08) 0%, transparent 45%),
+        linear-gradient(180deg, #090302 0%, #120704 35%, #0d0503 70%, #070202 100%);
+      color: #FFF2D8;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient drifting embers & vignette */
+    .ritual-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 120px 40px rgba(0, 0, 0, 0.95), inset 0 0 35px 2px rgba(255, 60, 0, 0.18);
+      background-image: radial-gradient(rgba(255, 140, 0, 0.04) 1px, transparent 0);
+      background-size: 32px 32px;
+      z-index: 40;
+    }
+
+    /* Ornate Grimoire Card Aesthetics */
+    .grimoire-card {
+      position: relative;
+      background: radial-gradient(circle at 50% 30%, #20100a 0%, #140905 70%, #0d0402 100%);
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 0.85rem;
+    }
+    .grimoire-card:hover {
+      transform: translateY(-6px) scale(1.015);
+    }
+
+    /* Outer Filigree Frames */
+    .card-tier-amber {
+      border: 1.5px solid #bd6e1a;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(189, 110, 26, 0.15);
+    }
+    .card-tier-amber:hover {
+      border-color: #ffaa2b;
+      box-shadow: 0 8px 28px rgba(255, 150, 30, 0.3), inset 0 0 16px rgba(255, 170, 43, 0.25);
+    }
+
+    /* Active Selected Card: Molten Aureole & Infernal Sigil */
+    .card-selected {
+      border: 2px solid #ffba42 !important;
+      background: radial-gradient(circle at 50% 25%, #36170a 0%, #1f0c05 65%, #100502 100%) !important;
+      box-shadow: 
+        0 0 35px rgba(255, 140, 20, 0.6), 
+        0 0 15px rgba(255, 70, 0, 0.8),
+        inset 0 0 20px rgba(255, 180, 50, 0.35) !important;
+      transform: translateY(-4px) scale(1.02) !important;
+      animation: pulseAura 3s infinite alternate ease-in-out;
+    }
+    @keyframes pulseAura {
+      0% { box-shadow: 0 0 25px rgba(255, 140, 20, 0.5), inset 0 0 15px rgba(255, 180, 50, 0.3); }
+      100% { box-shadow: 0 0 40px rgba(255, 160, 40, 0.75), 0 0 20px rgba(255, 60, 0, 0.9), inset 0 0 25px rgba(255, 200, 70, 0.45); }
+    }
+
+    .card-tier-crimson {
+      border: 1.5px solid #a32228;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(163, 34, 40, 0.2);
+    }
+    .card-tier-crimson:hover {
+      border-color: #ff333d;
+      box-shadow: 0 8px 28px rgba(220, 30, 40, 0.4), inset 0 0 16px rgba(255, 51, 61, 0.3);
+    }
+
+    .card-tier-void {
+      border: 1.5px solid #7c2d9e;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9), inset 0 0 12px rgba(124, 45, 158, 0.2);
+    }
+    .card-tier-void:hover {
+      border-color: #b357ff;
+      box-shadow: 0 8px 28px rgba(168, 85, 247, 0.38), inset 0 0 16px rgba(179, 87, 255, 0.3);
+    }
+
+    /* Realistic Melting Candle Flame flicker */
+    .candle-flame-real {
+      width: 10px;
+      height: 22px;
+      background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #ffdf6b 28%, #ff8c1a 70%, rgba(255, 45, 0, 0) 100%);
+      filter: drop-shadow(0 0 5px #ffb300) drop-shadow(0 0 12px #ff4500);
+      border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+      animation: flicker 1.8s infinite alternate ease-in-out;
+      transform-origin: 50% 90%;
+    }
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 5px #ffb300) drop-shadow(0 0 10px #ff4500); }
+      50% { transform: scale(1.08, 0.92) rotate(1.5deg); filter: drop-shadow(0 0 7px #ffd000) drop-shadow(0 0 14px #ff5500); }
+      100% { transform: scale(0.95, 1.05) rotate(-2deg); filter: drop-shadow(0 0 4px #ffa000) drop-shadow(0 0 9px #e63900); }
+    }
+
+    .candle-wax-body {
+      background: linear-gradient(180deg, #ede1cb 0%, #c4ab85 45%, #7e6344 100%);
+      box-shadow: inset 1px 0 2px rgba(255,255,255,0.4), inset -1px 0 3px rgba(0,0,0,0.5);
+    }
+
+    /* Metal Corner Brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .cb-tl { top: 3px; left: 3px; border-top: 2px solid currentColor; border-left: 2px solid currentColor; }
+    .cb-tr { top: 3px; right: 3px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; }
+    .cb-bl { bottom: 3px; left: 3px; border-bottom: 2px solid currentColor; border-left: 2px solid currentColor; }
+    .cb-br { bottom: 3px; right: 3px; border-bottom: 2px solid currentColor; border-right: 2px solid currentColor; }
+
+    /* Runic Etched Border Inset */
+    .inner-runic-border {
+      position: absolute;
+      inset: 5px;
+      border: 1px dashed rgba(255, 170, 43, 0.22);
+      border-radius: 0.6rem;
+      pointer-events: none;
+    }
+
+    /* Gothic Iron Plaque Header */
+    .gothic-metal-plate {
+      background: linear-gradient(180deg, #24140e 0%, #150a06 100%);
+      border: 1px solid #573322;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.8);
+    }
+
+    /* Overhauled Occult Animations for Cards 40, 100, Chalice & Void ? */
+    @keyframes magmaPulse {
+      0% {
+        filter: drop-shadow(0 0 3px #ff3b00) drop-shadow(0 0 7px #ff8c00);
+        stroke: #ff7700;
+        opacity: 0.85;
+      }
+      50% {
+        filter: drop-shadow(0 0 6px #ffedd5) drop-shadow(0 0 14px #ff3700) drop-shadow(0 0 20px #ff2200);
+        stroke: #fff4cc;
+        opacity: 1;
+      }
+      100% {
+        filter: drop-shadow(0 0 3px #ff3b00) drop-shadow(0 0 7px #ff8c00);
+        stroke: #ff7700;
+        opacity: 0.85;
+      }
+    }
+    .anim-magma-pulse {
+      animation: magmaPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes emberDrift {
+      0% {
+        transform: translate(0, 0) scale(0.6);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(var(--drift-x, -4px), -18px) scale(1.1);
+        opacity: 0;
+      }
+    }
+    .anim-ember-1 {
+      animation: emberDrift 2.2s infinite ease-out;
+      --drift-x: -3px;
+    }
+    .anim-ember-2 {
+      animation: emberDrift 2.8s infinite ease-out 0.8s;
+      --drift-x: 4px;
+    }
+    .anim-ember-3 {
+      animation: emberDrift 1.9s infinite ease-out 1.3s;
+      --drift-x: -1px;
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% {
+        transform: scaleY(1) scaleX(1);
+        filter: drop-shadow(0 0 4px #ff3300) drop-shadow(0 0 8px #ff9900);
+      }
+      33% {
+        transform: scaleY(1.12) scaleX(0.92) skewX(2deg);
+        filter: drop-shadow(0 0 7px #ff5500) drop-shadow(0 0 14px #ffb700);
+      }
+      66% {
+        transform: scaleY(0.94) scaleX(1.06) skewX(-2deg);
+        filter: drop-shadow(0 0 3px #d9232c) drop-shadow(0 0 6px #ff7700);
+      }
+    }
+    .anim-flame-flicker {
+      animation: flameFlicker 1.4s infinite alternate ease-in-out;
+      transform-origin: 50% 90%;
+    }
+
+    @keyframes bubblePop {
+      0% {
+        transform: translateY(2px) scale(0.3);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1);
+      }
+      75% {
+        transform: translateY(-4px) scale(1.3);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-5px) scale(1.6);
+        opacity: 0;
+      }
+    }
+    .anim-bubble-1 {
+      animation: bubblePop 2.1s infinite ease-out;
+      transform-origin: center;
+    }
+    .anim-bubble-2 {
+      animation: bubblePop 1.7s infinite ease-out 0.9s;
+      transform-origin: center;
+    }
+    .anim-bubble-3 {
+      animation: bubblePop 2.5s infinite ease-out 1.5s;
+      transform-origin: center;
+    }
+
+    @keyframes fumeRise {
+      0% {
+        transform: translateY(0) scaleX(0.8);
+        opacity: 0.15;
+      }
+      50% {
+        transform: translateY(-5px) scaleX(1.1);
+        opacity: 0.65;
+      }
+      100% {
+        transform: translateY(-11px) scaleX(1.3);
+        opacity: 0;
+      }
+    }
+    .anim-fume-1 {
+      animation: fumeRise 2.6s infinite ease-in-out;
+    }
+    .anim-fume-2 {
+      animation: fumeRise 3s infinite ease-in-out 1.2s;
+    }
+
+    @keyframes clockCurse {
+      0%, 100% {
+        stroke: #e52c34;
+        filter: drop-shadow(0 0 3px rgba(229, 44, 52, 0.4));
+      }
+      50% {
+        stroke: #ff9d2e;
+        filter: drop-shadow(0 0 9px rgba(255, 100, 20, 0.9)) drop-shadow(0 0 16px rgba(229, 44, 52, 0.8));
+      }
+    }
+    .anim-clock-curse {
+      animation: clockCurse 1.6s infinite ease-in-out;
+    }
+
+    @keyframes ectoWave {
+      0% {
+        transform: translateY(0) scaleX(0.9) skewX(-2deg);
+        opacity: 0.25;
+      }
+      50% {
+        transform: translateY(-6px) scaleX(1.12) skewX(3deg);
+        opacity: 0.85;
+        stroke: #e9d5ff;
+      }
+      100% {
+        transform: translateY(-14px) scaleX(0.95) skewX(-2deg);
+        opacity: 0;
+        stroke: #c084fc;
+      }
+    }
+    .anim-ecto-1 {
+      animation: ectoWave 2.8s infinite ease-in-out;
+      transform-origin: bottom center;
+    }
+    .anim-ecto-2 {
+      animation: ectoWave 3.2s infinite ease-in-out 0.9s;
+      transform-origin: bottom center;
+    }
+    .anim-ecto-3 {
+      animation: ectoWave 2.5s infinite ease-in-out 1.8s;
+      transform-origin: bottom center;
+    }
+
+    @keyframes sigilPulse {
+      0%, 100% {
+        opacity: 0.55;
+        transform: scale(0.95);
+        filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.5));
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 6px rgba(216, 180, 254, 0.95)) drop-shadow(0 0 10px rgba(168, 85, 247, 0.7));
+      }
+    }
+    .anim-sigil-pulse {
+      animation: sigilPulse 2.4s infinite ease-in-out;
+      transform-origin: center;
+    }
+
+    @keyframes vortexSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .anim-vortex-spin {
+      animation: vortexSpin 24s linear infinite;
+      transform-origin: 35px 33px;
+    }
+    .anim-vortex-counter {
+      animation: vortexSpin 16s linear infinite reverse;
+      transform-origin: 35px 33px;
+    }
+
+    @keyframes shadowWanderer {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 3px rgba(192, 132, 252, 0.4));
+      }
+      50% {
+        transform: translateY(-1.5px) scale(1.02);
+        filter: drop-shadow(0 0 6px rgba(216, 180, 254, 0.7));
+      }
+    }
+    .anim-shadow-wanderer {
+      animation: shadowWanderer 3s infinite ease-in-out;
+      transform-origin: bottom center;
+    }
+
+    @keyframes phaseGlyph {
+      0%, 100% {
+        opacity: 0.35;
+        transform: translateY(0) scale(0.92);
+        filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.4));
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(233, 213, 255, 0.95)) drop-shadow(0 0 14px rgba(168, 85, 247, 0.7));
+      }
+    }
+    .anim-phase-glyph-1 {
+      animation: phaseGlyph 2.5s infinite ease-in-out;
+      transform-origin: center;
+    }
+    .anim-phase-glyph-2 {
+      animation: phaseGlyph 2.9s infinite ease-in-out 1.2s;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen px-3 py-4 sm:px-8 sm:py-6 justify-between select-none">
+<!-- Atmospheric Ritual Darkness & Vignette Frame -->
+<div class="ritual-overlay"></div>
+<!-- Deep Occult Watermark Sigil (Centered subtle background graphic) -->
+<div class="fixed inset-0 pointer-events-none flex items-center justify-center opacity-[0.035] z-0 overflow-hidden">
+<svg class="w-[850px] h-[850px] text-amber-500 animate-[spin_160s_linear_infinite]" fill="currentColor" viewbox="0 0 200 200">
+<circle cx="100" cy="100" fill="none" r="92" stroke="currentColor" stroke-dasharray="4 2" stroke-width="1.5"></circle>
+<circle cx="100" cy="100" fill="none" r="82" stroke="currentColor" stroke-width="1"></circle>
+<polygon fill="none" points="100,10 178,160 22,65 178,65 22,160" stroke="currentColor" stroke-width="2"></polygon>
+<circle cx="100" cy="100" fill="none" r="42" stroke="currentColor" stroke-width="1.5"></circle>
+</svg>
+</div>
+<!-- Main Altar Container -->
+<div class="relative z-10 max-w-[1280px] w-full mx-auto flex-1 flex flex-col justify-between">
+<!-- Header: Gothic Banner, Coven Siphon & The Grand Altar -->
+<header class="w-full mb-3">
+<!-- Top Meta Ribbon: Current Sprint Tale & Sound Pact -->
+<div class="flex items-center justify-between text-[11px] sm:text-xs font-cinzel tracking-wider text-[#b89475] border-b border-[#3b1f14]/70 pb-2 mb-3">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2 h-2 rotate-45 bg-[#d92c34] shadow-[0_0_6px_#d92c34]"></span>
+<span class="text-[#ff9d2e] font-bold">SPRINT 66.6</span>
+<span class="text-[#6d4632]">✦</span>
+<span class="hidden sm:inline italic text-[#e4ceb6]">Story #666: Drop Staging DB Directly into Lake of Fire</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-[#ffc575]">
+<span class="material-symbols-outlined text-[15px] animate-spin text-[#d92c34]" style="animation-duration: 12s;">hourglass_bottom</span>
+<span>Hour of Reckoning</span>
+</div>
+<button class="hover:text-[#ffaa2b] transition-colors flex items-center gap-1 text-[11px]" type="button">
+<span class="material-symbols-outlined text-[14px]">volume_off</span>
+<span class="hidden md:inline">Mute Damned</span>
+</button>
+</div>
+</div>
+<!-- Main Title & Coven Controls Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Title Plaque -->
+<div class="flex items-center gap-3">
+<!-- Demonic Seal Medallion -->
+<div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#7a1216] via-[#330807] to-[#120302] border-2 border-[#ffaa2b]/60 flex items-center justify-center shadow-[0_0_16px_rgba(230,40,40,0.5)] shrink-0">
+<svg class="w-7 h-7 sm:w-8 sm:h-8 text-[#ffaa2b]" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L14.4 7.6L20.4 8.2L15.9 12.3L17.2 18.2L12 15.1L6.8 18.2L8.1 12.3L3.6 8.2L9.6 7.6L12 2Z" fill="none" stroke="currentColor" stroke-width="1.8"></path>
+<circle cx="12" cy="12" fill="#ff4d4d" r="3"></circle>
+</svg>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<h1 class="font-gothic text-4xl sm:text-5xl text-[#FFF2D8] tracking-wide drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">
+              DEVils Poker
+            </h1>
+<span class="font-cinzel text-xs text-[#d92c34] font-black tracking-widest hidden sm:inline-block px-1.5 py-0.5 border border-[#d92c34]/50 rounded bg-[#450a0d]/60">ESTIMATION GRIMOIRE</span>
+</div>
+<p class="font-gothicbody text-[16px] sm:text-[18px] text-[#dac6af] flex items-center gap-2 mt-0.5">
+<span>Round 8. You are</span>
+<span class="text-[#ffaa2b] font-bold underline decoration-[#ffaa2b]/50 decoration-wavy underline-offset-4">Mammon</span>
+<span class="text-xs text-[#8f6d54] font-cinzel">[Archdevil of Sprints]</span>
+</p>
+</div>
+</div>
+<!-- Header Action Tomes -->
+<div class="flex items-center gap-3">
+<!-- Invite the coven button -->
+<button class="relative px-5 py-2.5 rounded-lg border border-[#784126] bg-gradient-to-b from-[#2a170f] to-[#150a06] hover:border-[#ff9d2e] text-[#f2dfc7] font-gothicbody text-base tracking-wide transition-all shadow-[0_4px_12px_rgba(0,0,0,0.6)] active:scale-95 flex items-center gap-2 group" type="button">
+<span class="text-[#ff9d2e] group-hover:rotate-45 transition-transform">✦</span>
+<span>Invite the coven</span>
+<span class="text-[11px] font-cinzel text-[#ab8263] border border-[#522f1c] px-1 rounded bg-[#100603]">2/4</span>
+</button>
+<!-- Reveal votes (Blood Leather & Brimstone Runes) -->
+<button class="relative px-6 py-2.5 rounded-lg bg-gradient-to-b from-[#d9232c] via-[#a8141b] to-[#6b090e] border border-[#ff6666]/70 text-[#FFF7F4] font-gothicbody text-lg font-bold tracking-wider shadow-[0_0_24px_rgba(217,35,44,0.6)] hover:shadow-[0_0_35px_rgba(240,40,50,0.85)] hover:border-[#ffa3a3] transition-all active:scale-95 flex items-center gap-2.5 overflow-hidden group" type="button">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.25),_transparent)] pointer-events-none"></div>
+<span class="font-serif text-sm text-[#ffc575]">🩸</span>
+<span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Reveal Votes</span>
+<span class="font-cinzel text-[11px] font-normal text-[#ffc575]/80 bg-[#400508]/80 px-1.5 py-0.5 rounded border border-[#ff7070]/30">UNSEAL</span>
+</button>
+</div>
+</div>
+<!-- The Coven Siphon Row & Blood Pact Members -->
+<div class="flex flex-wrap items-center justify-between gap-3 mt-4 pt-2 border-t border-[#31170d]/60">
+<div class="flex items-center gap-2.5 flex-wrap">
+<span class="font-cinzel text-xs uppercase tracking-widest text-[#a88267] font-bold flex items-center gap-1.5">
+<span class="text-[#ff9d2e]">❖</span> The Coven:
+        </span>
+<!-- Mammon (You) -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full border border-[#ffaa2b] bg-gradient-to-r from-[#381c0c] to-[#1c0c05] text-xs font-gothicbody text-[#ffd99f] shadow-[0_0_10px_rgba(255,170,43,0.3)]">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffaa2b] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ff9d2e]"></span>
+</span>
+<span class="font-bold tracking-wide">Mammon <span class="text-[#ffaa2b] font-normal">(you - voted)</span></span>
+</div>
+<!-- Leviathan -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full border border-[#d97c36]/70 bg-[#221008] text-xs font-gothicbody text-[#edd9c2]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#22c55e] shadow-[0_0_6px_#22c55e]"></span>
+<span>Leviathan <span class="text-[#86efac] font-normal">(voted)</span></span>
+</div>
+<!-- Beelzebub (Pending) -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#4d281a] bg-[#140804]/80 text-xs font-gothicbody text-[#8d6d56] opacity-75">
+<span class="w-2 h-2 rounded-full bg-[#783c21]"></span>
+<span>Beelzebub <span class="italic text-[10px]">(pondering...)</span></span>
+</div>
+<!-- Asmodeus (Absent) -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#3b1c11] bg-[#100502]/60 text-xs font-gothicbody text-[#634835] opacity-60">
+<span class="w-2 h-2 rounded-full border border-[#634835]"></span>
+<span>Asmodeus <span class="italic text-[10px]">(afk / ritual)</span></span>
+</div>
+</div>
+<div class="font-cinzel text-xs text-[#dfb98d] flex items-center gap-3">
+<span class="flex items-center gap-1.5"><strong class="text-[#ffaa2b] font-black">2 of 4</strong> Souls Cast</span>
+<span class="text-[#683e25]">•</span>
+<span class="flex items-center gap-1.5"><strong class="text-[#FFF2D8] font-bold">2 of 4</strong> In Chamber</span>
+</div>
+</div>
+<!-- Gothic Altar Candelabra Progress Track -->
+<div class="mt-4 w-full">
+<div class="relative w-full pt-6 pb-2">
+<!-- Candelabra Iron Rail with Altar Candles -->
+<div class="absolute top-0 left-0 right-0 flex justify-between px-4 sm:px-8 pointer-events-none z-20">
+<!-- Candle 1 (Lit) -->
+<div class="flex flex-col items-center">
+<div class="candle-flame-real"></div>
+<div class="w-1.5 h-1 bg-[#1a0802]"></div>
+<div class="w-2.5 h-3 candle-wax-body rounded-t-sm relative">
+<span class="absolute -bottom-1 -left-0.5 w-1 h-1.5 bg-[#c4ab85] rounded-full"></span>
+</div>
+</div>
+<!-- Candle 2 (Lit) -->
+<div class="flex flex-col items-center">
+<div class="candle-flame-real"></div>
+<div class="w-1.5 h-1 bg-[#1a0802]"></div>
+<div class="w-2.5 h-3.5 candle-wax-body rounded-t-sm"></div>
+</div>
+<!-- Candle 3 (Lit) -->
+<div class="flex flex-col items-center">
+<div class="candle-flame-real"></div>
+<div class="w-1.5 h-1 bg-[#1a0802]"></div>
+<div class="w-2.5 h-4 candle-wax-body rounded-t-sm relative">
+<span class="absolute -bottom-1 -right-0.5 w-1.5 h-2 bg-[#d7c4a3] rounded-full"></span>
+</div>
+</div>
+<!-- Candle 4 (Lit) -->
+<div class="flex flex-col items-center">
+<div class="candle-flame-real"></div>
+<div class="w-1.5 h-1 bg-[#1a0802]"></div>
+<div class="w-2.5 h-3 candle-wax-body rounded-t-sm"></div>
+</div>
+<!-- Candle 5 (Lit - Siphon boundary) -->
+<div class="flex flex-col items-center">
+<div class="candle-flame-real" style="animation-delay: 0.4s;"></div>
+<div class="w-1.5 h-1 bg-[#1a0802]"></div>
+<div class="w-2.5 h-4 candle-wax-body rounded-t-sm"></div>
+</div>
+<!-- Candle 6 (Unlit / Smoldering Wick) -->
+<div class="flex flex-col items-center">
+<div class="w-1.5 h-2.5 bg-gradient-to-t from-[#260e06] to-[#451408] rounded-full opacity-60"></div>
+<div class="w-1.5 h-1 bg-[#0f0402]"></div>
+<div class="w-2.5 h-3.5 bg-[#4d3827] rounded-t-sm opacity-50"></div>
+</div>
+<!-- Candle 7 (Unlit) -->
+<div class="flex flex-col items-center">
+<div class="w-1.5 h-1.5 bg-[#0f0402] mt-1.5"></div>
+<div class="w-2.5 h-3 bg-[#4d3827] rounded-t-sm opacity-40"></div>
+</div>
+<!-- Candle 8 (Unlit) -->
+<div class="flex flex-col items-center">
+<div class="w-1.5 h-1.5 bg-[#0f0402] mt-1.5"></div>
+<div class="w-2.5 h-4 bg-[#4d3827] rounded-t-sm opacity-40"></div>
+</div>
+<!-- Candle 9 (Final Master Candle - Unlit) -->
+<div class="flex flex-col items-center">
+<div class="w-1.5 h-2 bg-[#0f0402] mt-1"></div>
+<div class="w-3 h-4.5 bg-[#4d3827] rounded-t-sm opacity-40"></div>
+</div>
+</div>
+<!-- Heavy Wrought Iron Altar Track -->
+<div class="w-full h-5 rounded-lg bg-[#0e0503] border-2 border-[#452012] shadow-[inset_0_2px_8px_rgba(0,0,0,0.9),0_2px_12px_rgba(255,100,20,0.15)] overflow-hidden p-[2px] relative">
+<!-- Etched Altar Runes inside trough -->
+<div class="absolute inset-0 flex justify-around items-center text-[10px] text-[#3d1a0c] pointer-events-none font-cinzel opacity-40">
+<span>ᚠ</span><span>ᚢ</span><span>ᚦ</span><span>ᚨ</span><span>ᚱ</span><span>ᚲ</span><span>ᚷ</span><span>ᚹ</span><span>ᚺ</span><span>ᚾ</span><span>ᛁ</span><span>ᛃ</span>
+</div>
+<!-- Molten Brimstone Core Fill (50%) -->
+<div class="h-full rounded-md bg-gradient-to-r from-[#6b0d05] via-[#c93e0b] to-[#ffaa2b] relative shadow-[0_0_16px_rgba(255,170,43,0.6)]" style="width: 50%;">
+<!-- Leading Flame Spark on Progress Head -->
+<div class="absolute right-0 top-0 bottom-0 w-3 bg-[#ffffff] rounded-r-md blur-[1.5px] opacity-90"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Ornate Grimoire Tarot Cards Grid (2 rows of 6 cards) -->
+<main class="w-full my-auto py-2">
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4" id="cards-container">
+<!-- Card: 0 (The Void Familiar) -->
+<div class="grimoire-card card-tier-amber p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffaa2b]" data-value="0">
+<div class="corner-bracket cb-tl"></div>
+<div class="corner-bracket cb-tr"></div>
+<div class="corner-bracket cb-bl"></div>
+<div class="corner-bracket cb-br"></div>
+<div class="inner-runic-border"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#ffaa2b] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">0</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a67440] uppercase">NULL • ᚱ</span>
+</div>
+<!-- Esoteric Illustration: Familiar cat with glowing eyes behind cursed terminal -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18 text-[#ffaa2b]" fill="none" viewbox="0 0 70 70">
+<!-- Cursed Terminal Base -->
+<rect fill="#0d0402" height="28" rx="2" stroke="#bd6e1a" stroke-width="1.6" width="40" x="15" y="24"></rect>
+<path d="M11 52h48l-4 6H15l-4-6z" fill="#1f0c05" stroke="#783e18" stroke-width="1.2"></path>
+<!-- Familiar Shadow Cat behind screen -->
+<path d="M22 24l5-12 7 6 7-6 5 12z" fill="#050201"></path>
+<circle class="animate-pulse" cx="30" cy="19" fill="#4ade80" r="1.8"></circle>
+<circle class="animate-pulse" cx="40" cy="19" fill="#4ade80" r="1.8"></circle>
+<!-- Cursed Green Syntax / Eye runes -->
+<path d="M22 33l4 4-4 4" stroke="#4ade80" stroke-linecap="round" stroke-width="1.8"></path>
+<line stroke="#4ade80" stroke-dasharray="2 3" stroke-width="1.8" x1="30" x2="42" y1="37" y2="37"></line>
+<circle cx="49" cy="37" fill="#ef4444" r="1.2"></circle>
+<!-- Pentagram corner seal -->
+<path d="M35 44l1 3 3-2-2 3 3 2-4 0-1 3-1-3-4 0 3-2-2-3 3 2z" fill="#bd6e1a" opacity="0.6"></path>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+            Already fixed it (lies)
+          </p>
+</div>
+</div>
+<!-- Card: 1 (The Devil's Pact) -->
+<div class="grimoire-card card-tier-amber p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffaa2b]" data-value="1">
+<div class="corner-bracket cb-tl"></div>
+<div class="corner-bracket cb-tr"></div>
+<div class="corner-bracket cb-bl"></div>
+<div class="corner-bracket cb-br"></div>
+<div class="inner-runic-border"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#ffaa2b] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">1</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a67440] uppercase">I • PACT</span>
+</div>
+<!-- Esoteric Illustration: Grimoire scroll & bleeding blood quill into browser -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Floating parchment window -->
+<rect fill="#170904" height="30" rx="3" stroke="#ffaa2b" stroke-width="1.5" width="42" x="14" y="14"></rect>
+<line stroke="#ffaa2b" stroke-width="1.2" x1="14" x2="56" y1="22" y2="22"></line>
+<circle cx="19" cy="18" fill="#ef4444" r="1.5"></circle>
+<circle cx="24" cy="18" fill="#ffaa2b" r="1.5"></circle>
+<!-- Scroll text runes -->
+<line stroke="#bd6e1a" stroke-linecap="round" stroke-width="1.8" x1="20" x2="38" y1="28" y2="28"></line>
+<line stroke="#bd6e1a" stroke-linecap="round" stroke-width="1.8" x1="20" x2="32" y1="33" y2="33"></line>
+<!-- Bleeding Raven Quill Pen -->
+<path d="M48 10c-3 10-14 22-14 26 2-1 6-2 9-5 3-4 6-12 5-21z" fill="#0d0402" stroke="#ffaa2b" stroke-width="1.2"></path>
+<!-- Blood drop into sacrificial altar bowl -->
+<path d="M34 38c0 2-2 4-2 4s-2-2-2-4a2 2 0 0 1 4 0z" fill="#ef4444"></path>
+<path d="M24 48h22c0 5-4 8-11 8s-11-3-11-8z" fill="#3b1307" stroke="#ffaa2b" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Copy-paste, then prayed
+          </p>
+</div>
+</div>
+<!-- Card: 2 (The Brimstone Match) -->
+<div class="grimoire-card card-tier-amber p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffaa2b]" data-value="2">
+<div class="corner-bracket cb-tl"></div>
+<div class="corner-bracket cb-tr"></div>
+<div class="corner-bracket cb-bl"></div>
+<div class="corner-bracket cb-br"></div>
+<div class="inner-runic-border"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#ffaa2b] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">2</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a67440] uppercase">II • PYRE</span>
+</div>
+<!-- Esoteric Illustration: Brimstone torch igniting git branch to ash -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Wooden bone matchstick -->
+<line stroke="#d97706" stroke-linecap="round" stroke-width="3.5" x1="16" x2="38" y1="52" y2="30"></line>
+<circle cx="41" cy="27" fill="#b91c1c" r="5"></circle>
+<!-- Raging occult flame -->
+<path d="M42 22c-3-9 4-15 9-18 1 7 8 10 7 16 3-3 5-7 5-7 2 6 0 14-8 14-6 0-10-3-13-5z" fill="#ffaa2b" stroke="#ef4444" stroke-width="1.2"></path>
+<circle cx="48" cy="18" fill="#fef08a" r="2.5"></circle>
+<!-- Dev git branch node burning -->
+<circle cx="22" cy="24" r="3" stroke="#ffaa2b" stroke-width="1.5"></circle>
+<circle cx="30" cy="16" r="3" stroke="#ef4444" stroke-width="1.5"></circle>
+<line stroke="#ffaa2b" stroke-width="1.5" x1="24" x2="28" y1="22" y2="18"></line>
+<!-- Sparkles & ash -->
+<circle cx="56" cy="14" fill="#ffedd5" r="1"></circle>
+<circle cx="59" cy="26" fill="#ffedd5" r="1.2"></circle>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Renamed a variable, deployed to prod
+          </p>
+</div>
+</div>
+<!-- Card: 3 (ACTIVE SELECTED - The Cursed Catalyst) -->
+<div class="grimoire-card card-selected p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffc575]" data-value="3">
+<!-- Golden Corner Filigree -->
+<div class="corner-bracket cb-tl text-[#ffe082]"></div>
+<div class="corner-bracket cb-tr text-[#ffe082]"></div>
+<div class="corner-bracket cb-bl text-[#ffe082]"></div>
+<div class="corner-bracket cb-br text-[#ffe082]"></div>
+<!-- Bright glowing runic frame -->
+<div class="inner-runic-border !border-amber-400/80 shadow-[0_0_8px_rgba(255,200,50,0.4)]"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-1.5">
+<span class="font-gothic text-3xl font-black text-[#ffe082] leading-none drop-shadow-[0_0_8px_rgba(255,180,40,0.9)]">3</span>
+<span class="text-[10px] text-[#ffaa2b] font-cinzel font-black px-1 rounded bg-[#3b1907] border border-[#ffaa2b]/60">CHOSEN</span>
+</div>
+<span class="font-cinzel text-[10px] tracking-widest text-[#ffaa2b] font-bold uppercase">III • CHAOS</span>
+</div>
+<!-- Esoteric Illustration: Cracked Demonic Push Button struck by Hell Lightning -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Left glowing demonic rune button -->
+<circle cx="23" cy="35" fill="url(#goldGradient)" r="11" stroke="#ffd54f" stroke-width="2"></circle>
+<path d="M22 28l-3 7h6l-3 7" stroke="#1f0a03" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+<!-- Demonic Lightning discharge linking them -->
+<path d="M33 32l6-5-3 8 7-3-8 10 3-6-5 4z" fill="#ffe082" stroke="#ff9100" stroke-width="0.8"></path>
+<!-- Right shattered button exploding into shrapnel -->
+<circle cx="48" cy="35" fill="#2d1007" r="10" stroke="#b71c1c" stroke-dasharray="4 2" stroke-width="1.8"></circle>
+<path d="M45 28l3 5-4 4 5 5" stroke="#ef4444" stroke-linecap="round" stroke-width="2"></path>
+<!-- Flying runic sparks -->
+<circle cx="42" cy="18" fill="#ffd54f" r="1.5"></circle>
+<circle cx="58" cy="24" fill="#ff7043" r="1.8"></circle>
+<circle cx="56" cy="46" fill="#ffd54f" r="1.2"></circle>
+<defs>
+<radialgradient cx="50%" cy="30%" id="goldGradient" r="70%">
+<stop offset="0%" stop-color="#fff59d"></stop>
+<stop offset="50%" stop-color="#ffb300"></stop>
+<stop offset="100%" stop-color="#b26a00"></stop>
+</radialgradient>
+</defs>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+            Added a button, broke the one next to it
+          </p>
+</div>
+</div>
+<!-- Card: 5 (The Winged Hell-Rocket) -->
+<div class="grimoire-card card-tier-amber p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffaa2b]" data-value="5">
+<div class="corner-bracket cb-tl"></div>
+<div class="corner-bracket cb-tr"></div>
+<div class="corner-bracket cb-bl"></div>
+<div class="corner-bracket cb-br"></div>
+<div class="inner-runic-border"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#ffaa2b] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">5</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a67440] uppercase">V • ABYSS</span>
+</div>
+<!-- Esoteric Illustration: Demonic bat-winged rocket diving into the underworld -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Demonic Bat Wings -->
+<path d="M30 38c-8-8-18-6-20 4 6 0 10 4 12 8" fill="#1b0804" stroke="#e5333b" stroke-width="1.3"></path>
+<path d="M42 26c8-8 18-6 20 4-6 0-10 4-12 8" fill="#1b0804" stroke="#e5333b" stroke-width="1.3"></path>
+<!-- Rocket Body plunging down -->
+<path d="M50 15c-11 3-20 12-22 23l7 7c11-2 20-11 23-22-1-3-5-7-8-8z" fill="#0d0302" stroke="#ffaa2b" stroke-width="1.6"></path>
+<!-- Porthole skull -->
+<circle cx="43" cy="24" fill="#ff4d4d" r="3"></circle>
+<!-- Underworld Flame Exhaust -->
+<path d="M26 44l-11 11 11-4 3 5 4-10z" fill="#ff9d2e"></path>
+<path d="M24 46l-6 6 6-2 2 3z" fill="#ffffff"></path>
+<!-- Zero Tests talisman -->
+<rect fill="#2b0e07" height="8" rx="1" stroke="#ffaa2b" stroke-width="1" width="16" x="36" y="48"></rect>
+<text fill="#ffd99f" font-family="'Cinzel', serif" font-size="6" x="39" y="54">0 TESTS</text>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            New endpoint, zero tests, full YOLO
+          </p>
+</div>
+</div>
+<!-- Card: 8 (The Possessed Terminal) -->
+<div class="grimoire-card card-tier-amber p-3.5 flex flex-col justify-between min-h-[220px] text-[#ffaa2b]" data-value="8">
+<div class="corner-bracket cb-tl"></div>
+<div class="corner-bracket cb-tr"></div>
+<div class="corner-bracket cb-bl"></div>
+<div class="corner-bracket cb-br"></div>
+<div class="inner-runic-border"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#ffaa2b] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">8</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a67440] uppercase">VIII • POLTERGEIST</span>
+</div>
+<!-- Esoteric Illustration: Ghost ghoul emerging from CRT monitor with talismans -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- CRT monitor -->
+<rect fill="#0d0402" height="22" rx="2" stroke="#783e18" stroke-width="1.5" width="34" x="18" y="34"></rect>
+<line stroke="#783e18" stroke-width="2.5" x1="28" x2="42" y1="56" y2="56"></line>
+<!-- Ghost Ghoul Ascending -->
+<path d="M35 12c-7 0-12 5-12 12 0 9 12 14 12 14s12-5 12-14c0-7-5-12-12-12z" fill="#f8fafc" opacity="0.9"></path>
+<circle cx="31" cy="21" fill="#090302" r="2"></circle>
+<circle cx="39" cy="21" fill="#090302" r="2"></circle>
+<ellipse cx="35" cy="28" fill="#090302" rx="2.5" ry="3.5"></ellipse>
+<!-- Floating Exorcism Talismans -->
+<rect fill="#fef08a" height="12" stroke="#d97706" stroke-width="0.8" width="6" x="12" y="24"></rect>
+<text fill="#b91c1c" font-size="7" x="13" y="32">敕</text>
+<rect fill="#fef08a" height="12" stroke="#d97706" stroke-width="0.8" width="6" x="52" y="24"></rect>
+<text fill="#b91c1c" font-size="7" x="53" y="32">符</text>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Works on my machine (exorcism pending)
+          </p>
+</div>
+</div>
+<!-- Card: 13 (The Cursed Tombstone Monolith) -->
+<div class="grimoire-card card-tier-crimson p-3.5 flex flex-col justify-between min-h-[220px] text-[#e52c34]" data-value="13">
+<div class="corner-bracket cb-tl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-tr text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-bl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-br text-[#ff4d4d]"></div>
+<div class="inner-runic-border !border-red-900/40"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#e52c34] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">13</span>
+<div class="flex items-center gap-1">
+<span class="font-cinzel text-[10px] tracking-widest text-[#d92c34] uppercase">XIII • MORT</span>
+<span class="text-[#e52c34] text-xs font-bold font-serif">✕</span>
+</div>
+</div>
+<!-- Esoteric Illustration: Tombstone monolith bound in thorns & dripping holy water -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Mausoleum headstone -->
+<path d="M22 56V26c0-7 6-12 13-12s13 5 13 12v30H22z" fill="#140404" stroke="#e52c34" stroke-width="1.8"></path>
+<!-- R.I.P Legacy Code Latin -->
+<path d="M35 22v10M30 27h10" stroke="#ff7377" stroke-linecap="round" stroke-width="1.5"></path>
+<text fill="#e52c34" font-family="'Cinzel', serif" font-size="6" x="27" y="42">LEGACY</text>
+<!-- Barbed wire & cursed thorns wrapping it -->
+<path d="M19 46c7-3 14 3 21-2 5-3 8-1 12 1" stroke="#ff4d4d" stroke-width="1.2"></path>
+<path d="M20 34c8 2 13-4 20 1 5 3 8-1 11-2" stroke="#ff4d4d" stroke-width="1.2"></path>
+<!-- Holy water flask shattering -->
+<circle cx="16" cy="22" fill="#38bdf8" opacity="0.8" r="3.5"></circle>
+<path d="M16 16v3" stroke="#e0f2fe" stroke-width="1.5"></path>
+<!-- Ground blood pool -->
+<ellipse cx="35" cy="56" fill="#450a0a" rx="20" ry="4"></ellipse>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Legacy code archaeology, bring holy water
+          </p>
+</div>
+</div>
+<!-- Card: 20 (Summoning The Vendor Demon) -->
+<div class="grimoire-card card-tier-crimson p-3.5 flex flex-col justify-between min-h-[220px] text-[#e52c34]" data-value="20">
+<div class="corner-bracket cb-tl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-tr text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-bl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-br text-[#ff4d4d]"></div>
+<div class="inner-runic-border !border-red-900/40"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#e52c34] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">20</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#d92c34] uppercase">XX • VENDOR</span>
+</div>
+<!-- Esoteric Illustration: Eldritch multi-eyed portal summoning dark robed entity -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-18 h-18" fill="none" viewbox="0 0 70 70">
+<!-- Blood Portal Ring -->
+<ellipse cx="35" cy="35" fill="#200606" rx="22" ry="14" stroke="#e52c34" stroke-dasharray="3 2" stroke-width="1.5"></ellipse>
+<ellipse cx="35" cy="35" rx="15" ry="9" stroke="#ffaa2b" stroke-width="1"></ellipse>
+<!-- Shadow Horned Vendor Entity -->
+<path d="M35 18c-5 0-9 6-9 14 0 6 9 16 9 16s9-10 9-16c0-8-4-14-9-14z" fill="#090202" stroke="#ff4d4d" stroke-width="1.2"></path>
+<!-- Vendor horns -->
+<path d="M30 22l-4-6 6 2" stroke="#ffaa2b" stroke-width="1.5"></path>
+<path d="M40 22l4-6-6 2" stroke="#ffaa2b" stroke-width="1.5"></path>
+<!-- Eldritch Eyes gazing -->
+<circle cx="20" cy="24" fill="#ffaa2b" r="2"></circle>
+<circle cx="50" cy="24" fill="#ffaa2b" r="2"></circle>
+<circle cx="53" cy="42" fill="#e52c34" r="1.5"></circle>
+<circle cx="17" cy="42" fill="#e52c34" r="1.5"></circle>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Undocumented API, summon the vendor
+          </p>
+</div>
+</div>
+<!-- Card: 40 (Shatter the Monolith - Overhauled Molten Fissure Obelisk) -->
+<div class="grimoire-card card-tier-crimson p-3.5 flex flex-col justify-between min-h-[220px] text-[#e52c34]" data-value="40">
+<div class="corner-bracket cb-tl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-tr text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-bl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-br text-[#ff4d4d]"></div>
+<div class="inner-runic-border !border-red-900/40"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#e52c34] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">40</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#d92c34] uppercase">XL • SACRIFICE</span>
+</div>
+<!-- Esoteric Illustration: Fractured basalt obelisk splitting in two with pulsating magma fissure & floating ember sparks -->
+<div class="my-auto flex justify-center py-2 z-10">
+<svg class="w-20 h-20 overflow-visible" fill="none" viewbox="0 0 70 70">
+<defs>
+<radialgradient cx="50%" cy="50%" id="magmaGlow" r="50%">
+<stop offset="0%" stop-color="#fffbeb"></stop>
+<stop offset="35%" stop-color="#ffaa2b"></stop>
+<stop offset="70%" stop-color="#e52c34"></stop>
+<stop offset="100%" stop-color="#660a0a" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Magma backglow aura -->
+<ellipse cx="35" cy="38" fill="url(#magmaGlow)" opacity="0.45" rx="16" ry="24"></ellipse>
+<!-- Left Monolith Slab (Basalt rock face with elder runes) -->
+<path d="M19 59L23 15L31 13L26 25L32 36L25 48L28 59H19Z" fill="#130504" stroke="#a32228" stroke-linejoin="round" stroke-width="1.6"></path>
+<!-- Right Monolith Slab (Basalt rock face splitting away) -->
+<path d="M51 59L47 15L39 13L44 25L38 36L45 48L42 59H51Z" fill="#130504" stroke="#a32228" stroke-linejoin="round" stroke-width="1.6"></path>
+<!-- Sacrificial Elder Runes carved on stone faces -->
+<!-- Left face runes: ᚦ, ᚱ -->
+<path d="M23 28v8M23 29c3 1 3 4 0 5" stroke="#ff7377" stroke-linecap="round" stroke-width="0.9"></path>
+<path d="M22 44v7M22 45c3 0 3 3 0 3m0 0l3 3" stroke="#ff7377" stroke-linecap="round" stroke-width="0.85"></path>
+<!-- Right face runes: ᛉ, ᛋ -->
+<path d="M46 28v8M43 30l3 3 3-3" stroke="#ff7377" stroke-linecap="round" stroke-width="0.9"></path>
+<path d="M47 43l-3 3 3 3-3 3" stroke="#ff7377" stroke-linecap="round" stroke-width="0.85"></path>
+<!-- Core Fissure Molten Lava stream (Pulsating) -->
+<path class="anim-magma-pulse" d="M31 13L26 25L32 36L25 48L28 59" stroke="#ffaa2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<path class="anim-magma-pulse" d="M39 13L44 25L38 36L45 48L42 59" stroke="#ffaa2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+<!-- White-hot molten core line -->
+<path class="anim-magma-pulse" d="M35 14L30 26L35 36L30 48L35 59" stroke="#fff4cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"></path>
+<!-- Drifting molten ember sparks floating upward -->
+<circle class="anim-ember-1" cx="33" cy="46" fill="#fef08a" r="1.5"></circle>
+<circle class="anim-ember-2" cx="37" cy="34" fill="#ffaa2b" r="1.3"></circle>
+<circle class="anim-ember-3" cx="31" cy="22" fill="#ffffff" r="1.1"></circle>
+<!-- Ground scorched earth platform -->
+<ellipse cx="35" cy="60" fill="#070202" rx="22" ry="3.5" stroke="#781418" stroke-width="1"></ellipse>
+</svg>
+</div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Rewrite the monolith, sacrifice the sprint
+          </p>
+</div>
+</div>
+<!-- Card: 100 (Friday DB Live Migration Cauldron - Overhauled Volcanic Pyre & Clock) -->
+<div class="grimoire-card card-tier-crimson p-3.5 flex flex-col justify-between min-h-[220px] text-[#e52c34]" data-value="100">
+<div class="corner-bracket cb-tl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-tr text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-bl text-[#ff4d4d]"></div>
+<div class="corner-bracket cb-br text-[#ff4d4d]"></div>
+<div class="inner-runic-border !border-red-900/40"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-1">
+<span class="font-gothic text-3xl font-black text-[#e52c34] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">100</span>
+<span class="text-sm">🔥</span>
+</div>
+<span class="font-cinzel text-[10px] tracking-widest text-[#d92c34] uppercase">C • DOOM</span>
+</div>
+<!-- Esoteric Illustration: Riveted iron cauldron bubbling with brimstone, dancing organic flame pyre, rising fumes, reckoning clock -->
+<div class="my-auto flex justify-center py-2 z-10"><svg class="w-20 h-20 overflow-visible" fill="none" viewbox="0 0 70 70">
+<defs>
+<radialgradient cx="50%" cy="60%" id="infernoBackdrop" r="50%">
+<stop offset="0%" stop-color="#ffedd5" stop-opacity="0.6"></stop>
+<stop offset="30%" stop-color="#ff9d2e" stop-opacity="0.5"></stop>
+<stop offset="70%" stop-color="#d9232c" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#300507" stop-opacity="0"></stop>
+</radialgradient>
+<lineargradient id="flameGradMain" x1="0%" x2="0%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#780a0a"></stop>
+<stop offset="35%" stop-color="#e52c34"></stop>
+<stop offset="75%" stop-color="#ffaa2b"></stop>
+<stop offset="100%" stop-color="#fffbeb"></stop>
+</lineargradient>
+</defs>
+<!-- Inferno Ambient Glow Core -->
+<ellipse cx="35" cy="42" fill="url(#infernoBackdrop)" rx="24" ry="18"></ellipse>
+<!-- Background Raging Layered Fire Wall -->
+<g class="anim-inferno-flames" opacity="0.95">
+<path d="M8 60 C9 44 14 38 18 46 C21 34 27 28 29 42 C33 24 41 20 44 38 C47 26 53 30 55 45 C58 35 63 42 63 60 Z" fill="url(#flameGradMain)"></path>
+<!-- Inner high-heat golden licking flame tongues -->
+<path d="M13 60 C15 48 19 44 22 51 C25 40 31 36 34 47 C37 32 44 30 46 44 C48 37 53 41 55 52 C57 46 60 50 60 60 Z" fill="#fff2a8" opacity="0.85"></path>
+<path d="M17 60 C20 52 23 48 26 54 C29 46 34 42 36 50 C40 38 44 38 46 51 C48 45 52 48 53 60 Z" fill="#ffffff" opacity="0.7"></path>
+</g>
+<!-- Burning Wooden Desk / Dev Altar Bench -->
+<rect fill="#1c0805" height="9" rx="1.5" stroke="#a32228" stroke-width="1.4" width="46" x="12" y="50"></rect>
+<line opacity="0.6" stroke="#ffaa2b" stroke-width="0.8" x1="14" x2="56" y1="53" y2="53"></line>
+<!-- Table embers & burning char edges -->
+<circle cx="16" cy="50" fill="#ffaa2b" r="1.2"></circle>
+<circle cx="54" cy="50" fill="#ffaa2b" r="1.2"></circle>
+<!-- The Horned Developer (Calmly sitting, serene 'This is fine' posture) -->
+<g class="anim-calm-sipper">
+<!-- Relaxed Body / Robe -->
+<path d="M26 44 C26 39 31 37 35 37 C39 37 44 39 44 44 L46 52 H24 Z" fill="#0d0303" stroke="#ffaa2b" stroke-width="1.2"></path>
+<!-- Demonic Horns on head -->
+<path d="M31 31 C28 27 25 24 23 25 C23 28 27 31 29 33 Z" fill="#d9232c" stroke="#ffaa2b" stroke-width="0.9"></path>
+<path d="M39 31 C42 27 45 24 47 25 C47 28 43 31 41 33 Z" fill="#d9232c" stroke="#ffaa2b" stroke-width="0.9"></path>
+<!-- Developer Head -->
+<ellipse cx="35" cy="33" fill="#180605" rx="6" ry="6.5" stroke="#ffaa2b" stroke-width="1.3"></ellipse>
+<!-- Peaceful serene shut eyes (blissful calm in chaos) -->
+<path d="M32 32.5 Q33.5 34 35 32.5" fill="none" stroke="#ffe082" stroke-linecap="round" stroke-width="1.1"></path>
+<path d="M36 32.5 Q37.5 34 39 32.5" fill="none" stroke="#ffe082" stroke-linecap="round" stroke-width="1.1"></path>
+<!-- Tiny tranquil smile -->
+<path d="M34 36.5 Q35.5 37.8 37 36.5" fill="none" stroke="#ff9d2e" stroke-linecap="round" stroke-width="1"></path>
+<!-- Left arm raised holding steaming coffee mug -->
+<path d="M28 42 C24 42 21 44 24 47 L27 47" stroke="#ffaa2b" stroke-linecap="round" stroke-width="1.6"></path>
+<!-- The Steaming Coffee Mug -->
+<rect fill="#fff2d8" height="6.5" rx="1" stroke="#a32228" stroke-width="1" width="6.5" x="20" y="43"></rect>
+<!-- Mug Handle -->
+<path d="M20 44.5 C18 44.5 18 47.5 20 47.5" fill="none" stroke="#a32228" stroke-width="1"></path>
+<!-- Rising delicate coffee steam -->
+<g class="anim-mug-steam">
+<path d="M22 41 C21 38 24 36 23 33" stroke="#fffbeb" stroke-linecap="round" stroke-width="1.1"></path>
+<path d="M25 41 C26 38 23 36 24 33" stroke="#fed7aa" stroke-linecap="round" stroke-width="1"></path>
+</g>
+</g>
+<!-- Foreground Flame Crests framing the desk -->
+<path d="M8 60 C11 53 14 54 16 60" fill="none" stroke="#ffaa2b" stroke-width="1.6"></path>
+<path d="M54 60 C56 52 60 53 62 60" fill="none" stroke="#ffaa2b" stroke-width="1.6"></path>
+<line stroke="#781418" stroke-width="2" x1="10" x2="60" y1="60" y2="60"></line>
+</svg></div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Migrate the DB. Live. On a Friday.
+          </p>
+</div>
+</div>
+<!-- Card: Coffee / Spectral Chalice - Overhauled Soul Goblet & Undulating Ectoplasm -->
+<div class="grimoire-card card-tier-void p-3.5 flex flex-col justify-between min-h-[220px] text-[#b357ff]" data-value="COFFEE">
+<div class="corner-bracket cb-tl text-[#c084fc]"></div>
+<div class="corner-bracket cb-tr text-[#c084fc]"></div>
+<div class="corner-bracket cb-bl text-[#c084fc]"></div>
+<div class="corner-bracket cb-br text-[#c084fc]"></div>
+<div class="inner-runic-border !border-purple-800/40"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center text-[#c084fc]">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+<path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+<line x1="6" x2="6" y1="1" y2="4"></line>
+<line x1="10" x2="10" y1="1" y2="4"></line>
+<line x1="14" x2="14" y1="1" y2="4"></line>
+</svg>
+</div>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a855f7] uppercase">CHALICE • SOUL</span>
+</div>
+<!-- Esoteric Illustration: Fluted gothic skull-chalice with pulsing all-seeing eye sigil & undulating ectoplasmic vapors -->
+<div class="my-auto flex justify-center py-2 z-10"><svg class="w-20 h-20 overflow-visible" fill="none" viewbox="0 0 70 70">
+<defs>
+<!-- Radiant Soul Infusion Aura -->
+<radialgradient cx="50%" cy="45%" id="soulReviveAura" r="55%">
+<stop offset="0%" stop-color="#67e8f9" stop-opacity="0.95"></stop>
+<stop offset="30%" stop-color="#fde047" stop-opacity="0.75"></stop>
+<stop offset="65%" stop-color="#c084fc" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#18082e" stop-opacity="0"></stop>
+</radialgradient>
+<lineargradient id="chaliceMetal" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#2e1065"></stop>
+<stop offset="50%" stop-color="#170628"></stop>
+<stop offset="100%" stop-color="#0a0214"></stop>
+</lineargradient>
+</defs>
+<!-- Spectral Silhouette / Revitalizing Husk Behind Cup -->
+<g class="anim-husk-glow">
+<!-- Faint translucent human spirit head & shoulders absorbing the vitality -->
+<circle cx="35" cy="18" fill="none" r="8" stroke="#38bdf8" stroke-dasharray="2 2" stroke-width="1.2"></circle>
+<path d="M24 32 C24 24 29 23 35 23 C41 23 46 24 46 32" fill="none" stroke="#38bdf8" stroke-dasharray="2 3" stroke-width="1.1"></path>
+</g>
+<!-- Returning Soul Energy Streams spiraling down into the chalice -->
+<g class="anim-soul-infusion">
+<path d="M23 12 C30 18 25 24 33 27" stroke="#38bdf8" stroke-linecap="round" stroke-width="1.8"></path>
+<path d="M47 11 C38 17 43 23 37 27" stroke="#fde047" stroke-linecap="round" stroke-width="1.8"></path>
+<path d="M35 8 C33 16 36 21 35 28" stroke="#e9d5ff" stroke-linecap="round" stroke-width="1.5"></path>
+</g>
+<!-- Radiant Soul Core Orb / Essence Descending into Cup (Heart/Soul restoring life) -->
+<g class="anim-soul-core">
+<circle cx="35" cy="27" fill="url(#soulReviveAura)" r="11"></circle>
+<circle cx="35" cy="27" fill="#ffffff" r="4.5"></circle>
+<circle cx="35" cy="27" fill="#67e8f9" r="2.5"></circle>
+<!-- Radiating spirit sparkles -->
+<path d="M35 17 V21 M35 33 V37 M25 27 H29 M41 27 H45" stroke="#fef08a" stroke-linecap="round" stroke-width="1.3"></path>
+<circle cx="28" cy="20" fill="#67e8f9" r="1"></circle>
+<circle cx="42" cy="20" fill="#fde047" r="1.2"></circle>
+<circle cx="30" cy="33" fill="#ffffff" r="0.9"></circle>
+<circle cx="40" cy="33" fill="#c084fc" r="1"></circle>
+</g>
+<!-- Gothic Obsidian Chalice Vessel (Sleek fluted goblet with NO eye sigil) -->
+<path d="M20 28 H50 C50 43 42 49 35 49 C28 49 20 43 20 28 Z" fill="url(#chaliceMetal)" stroke="#c084fc" stroke-width="1.8"></path>
+<!-- Chalice Rim with golden spirit nectar sheen -->
+<ellipse cx="35" cy="28" fill="#2e1065" rx="15" ry="4.5" stroke="#fde047" stroke-width="1.4"></ellipse>
+<!-- Molten Celestial Soul Liquid pool inside rim -->
+<ellipse cx="35" cy="28" fill="#38bdf8" opacity="0.85" rx="12" ry="3"></ellipse>
+<!-- Fluted Gothic Chalice Ribbed Stem & Filigree Node -->
+<path d="M33 49 H37 V57 H33 Z" fill="#170628" stroke="#a855f7" stroke-width="1.6"></path>
+<circle cx="35" cy="53" fill="#fde047" r="3" stroke="#c084fc" stroke-width="1.2"></circle>
+<!-- Sacred Chalice Base with runic stepped pedestal -->
+<path d="M23 62 C27 58 30 57 35 57 C40 57 43 58 47 62 H23 Z" fill="url(#chaliceMetal)" stroke="#c084fc" stroke-width="1.8"></path>
+<line stroke="#fde047" stroke-width="1.5" x1="21" x2="49" y1="62" y2="62"></line>
+<!-- Ornate filigree engraving on goblet wall (Clean filigree brackets, strictly no eye) -->
+<path d="M27 36 C31 42 39 42 43 36" fill="none" stroke="#a855f7" stroke-width="1.2"></path>
+<circle cx="35" cy="42" fill="#38bdf8" r="1.8"></circle>
+</svg></div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            Need more info, send coffee
+          </p>
+</div>
+</div>
+<!-- Card: Question / The Eldritch Labyrinth - Overhauled Cosmic Vortex Gateway & Lost Dev -->
+<div class="grimoire-card card-tier-void p-3.5 flex flex-col justify-between min-h-[220px] text-[#b357ff]" data-value="?">
+<div class="corner-bracket cb-tl text-[#c084fc]"></div>
+<div class="corner-bracket cb-tr text-[#c084fc]"></div>
+<div class="corner-bracket cb-bl text-[#c084fc]"></div>
+<div class="corner-bracket cb-br text-[#c084fc]"></div>
+<div class="inner-runic-border !border-purple-800/40"></div>
+<div class="flex justify-between items-start z-10">
+<span class="font-gothic text-3xl font-black text-[#c084fc] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">?</span>
+<span class="font-cinzel text-[10px] tracking-widest text-[#a855f7] uppercase">VOID • PUZZLE</span>
+</div>
+<!-- Esoteric Illustration: Gothic masked archway with rotating cosmic void vortex & shadowy lost developer at the precipice -->
+<div class="my-auto flex justify-center py-2 z-10"><svg class="w-20 h-20 overflow-visible" fill="none" viewbox="0 0 70 70">
+<defs>
+<radialgradient cx="20%" cy="50%" id="voidTunnelGlow" r="60%">
+<stop offset="0%" stop-color="#581c87" stop-opacity="0.6"></stop>
+<stop offset="60%" stop-color="#1e0538" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#08020f" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Background Void Whirlwind / Panic Tunnel -->
+<ellipse cx="25" cy="35" fill="url(#voidTunnelGlow)" rx="22" ry="16"></ellipse>
+<!-- Scattered Cloud of Spectral Question Marks Kicked Up Behind the Fleeing Dev -->
+<g class="anim-trail-q1">
+<text fill="#e9d5ff" filter="drop-shadow(0 0 4px #c084fc)" font-family="'MedievalSharp', cursive" font-size="14" font-weight="bold" x="16" y="26">?</text>
+</g>
+<g class="anim-trail-q2">
+<text fill="#c084fc" filter="drop-shadow(0 0 5px #9333ea)" font-family="'Cinzel Decorative', 'MedievalSharp', cursive" font-size="16" font-weight="900" x="24" y="20">?</text>
+</g>
+<g class="anim-trail-q3">
+<text fill="#a855f7" font-family="'MedievalSharp', cursive" font-size="11" font-weight="bold" opacity="0.85" x="12" y="38">?</text>
+</g>
+<g class="anim-trail-q1" style="animation-delay: 0.9s;">
+<text fill="#f3e8ff" font-family="'MedievalSharp', cursive" font-size="13" font-weight="bold" x="20" y="46">?</text>
+</g>
+<!-- Panic Dust Puffs at the Dev's Heels -->
+<g class="anim-dust-puff">
+<circle cx="33" cy="56" fill="#7e22ce" opacity="0.5" r="3"></circle>
+<circle cx="29" cy="54" fill="#a855f7" opacity="0.4" r="2"></circle>
+</g>
+<!-- Frantic Horizontal Wind / Speed Lines -->
+<line opacity="0.7" stroke="#a855f7" stroke-dasharray="3 3" stroke-width="1.2" x1="8" x2="24" y1="30" y2="30"></line>
+<line opacity="0.8" stroke="#c084fc" stroke-dasharray="4 2" stroke-width="1.4" x1="14" x2="28" y1="36" y2="36"></line>
+<line opacity="0.6" stroke="#e9d5ff" stroke-dasharray="2 3" stroke-width="1" x1="10" x2="30" y1="44" y2="44"></line>
+<!-- Panicked Sprinting Developer (Fleeing Right towards exit edge) -->
+<g class="anim-dev-flee">
+<!-- Wild Trailing Occult Cloak / Coat blowing violently backward -->
+<g class="anim-coat-trail">
+<path d="M44 32 C38 31 29 27 20 28 C26 34 32 35 38 37 Z" fill="#2e1065" stroke="#c084fc" stroke-width="1.2"></path>
+<path d="M43 35 C36 36 26 33 18 36 C24 41 33 41 40 42 Z" fill="#3b0764" stroke="#a855f7" stroke-width="1.2"></path>
+</g>
+<!-- Forward-leaning sprinting torso -->
+<path d="M40 32 L47 43 L43 45 L38 34 Z" fill="#f3e8ff" stroke="#c084fc" stroke-width="1.2"></path>
+<!-- Panicked Head tilted forward looking back/screaming into the void -->
+<circle cx="47" cy="26" fill="#f8fafc" r="4.5" stroke="#c084fc" stroke-width="1.4"></circle>
+<!-- Wide terrified eyes & agape mouth -->
+<circle cx="45.5" cy="25.5" fill="#0f021f" r="1"></circle>
+<circle cx="48.5" cy="25.5" fill="#0f021f" r="1"></circle>
+<ellipse cx="47" cy="28.5" fill="#0f021f" rx="1.2" ry="1.6"></ellipse>
+<!-- Arms pumping frantically in full sprint -->
+<!-- Forward reaching arm -->
+<path d="M44 33 L53 31 L58 35" stroke="#f3e8ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Back arm counter-balance -->
+<path d="M41 34 L34 39 L31 36" stroke="#e9d5ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+<!-- Sprinting Legs -->
+<!-- Front extended leg driving forward -->
+<path d="M46 43 L54 48 L62 55" stroke="#f8fafc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+<!-- Back leg kicking up behind in stride -->
+<path d="M42 44 L35 50 L31 46" stroke="#e9d5ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</g>
+<!-- Exit Boundary Threshold Line -->
+<line opacity="0.5" stroke="#c084fc" stroke-dasharray="3 3" stroke-width="1.2" x1="64" x2="64" y1="15" y2="60"></line>
+<path d="M61 58 H67" stroke="#a855f7" stroke-linecap="round" stroke-width="2"></path>
+</svg></div>
+<div class="text-center z-10">
+<p class="font-gothicbody text-[14px] leading-snug font-bold text-[#FFF2D8]">
+            No idea, ask the PO
+          </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Ornate Altar Inscription & Footer Notice -->
+<footer class="w-full pt-3 pb-1 border-t border-[#31160c]/70 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+<p class="font-gothicbody text-[14px] sm:text-[15px] text-[#d6b797] tracking-wide flex items-center gap-2">
+<span class="text-[#ffaa2b]">❖</span>
+<span>Pick a card. Pick another to change your mind. The veil remains unsevered until someone reveals.</span>
+</p>
+<div class="flex items-center gap-3 text-[11px] font-cinzel text-[#825e45]">
+<span>GRIMOIRE v6.6</span>
+<span>•</span>
+<span class="text-[#d92c34] font-bold">SOULS BOUND: 2</span>
+</div>
+</footer>
+</div>
+<!-- Interactive Card Selection Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.grimoire-card');
+    
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Deselect all
+        cards.forEach(c => {
+          c.classList.remove('card-selected');
+          // Re-enable borders if needed
+          const innerRunic = c.querySelector('.inner-runic-border');
+          if (innerRunic) {
+            innerRunic.classList.remove('!border-amber-400/80');
+          }
+        });
+
+        // Select clicked card
+        card.classList.add('card-selected');
+        const innerRunic = card.querySelector('.inner-runic-border');
+        if (innerRunic) {
+          innerRunic.classList.add('!border-amber-400/80');
+        }
+      });
+    });
+  });
+</script>
+</body></html>
