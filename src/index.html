@@ -112,14 +112,12 @@ button.pc.sel:hover{transform:translateY(-4px) scale(1.02)}
 .hint{color:var(--dim);margin:14px 0 0}
 .landing{text-align:center;padding-top:9vh}
 .landing .brand{justify-content:center;margin-bottom:12px}
-.landing .btn{margin-top:22px}
-
-.rules{max-width:640px;margin:34px auto 0;text-align:left;border-top:1px solid #31170d;padding-top:22px}
+.rules{max-width:680px;margin:10px auto 0;text-align:center;border-top:1px solid #31170d;padding-top:22px}
 .rules h2{font-family:var(--gothic);font-weight:400;font-size:1.5rem;margin:0 0 8px;text-align:center}
 .rules .lede{color:var(--dim);text-align:center;margin:0 0 18px;font-size:1rem}
-.rules ol{margin:0;padding:0 0 0 1.4em;color:var(--ink);font-size:.98rem;line-height:1.55}
-.rules li{margin-bottom:6px}
-.rules li b{color:var(--amber)}
+.rules .steps{display:flex;flex-direction:column;gap:14px;align-items:center;color:var(--dim);font-size:.98rem;line-height:1.5;text-align:center}
+.rules .steps p{margin:0;max-width:620px}
+.rules .steps b{color:var(--amber);font-weight:700}
 
 [class*="anim-"]{transform-box:fill-box;transform-origin:50% 50%}
 @keyframes magmaPulse{0%,100%{filter:drop-shadow(0 0 3px #ff3b00) drop-shadow(0 0 7px #ff8c00);stroke:#ff7700;opacity:.85}50%{filter:drop-shadow(0 0 6px #ffedd5) drop-shadow(0 0 14px #ff3700);stroke:#fff4cc;opacity:1}}
@@ -153,7 +151,7 @@ button.seal{cursor:pointer;padding:0;color:#d9b98f;transition:box-shadow .2s,col
 button.seal:hover{border-color:#ffaa2b}
 button.seal[aria-pressed="true"]{color:#ffaa2b;box-shadow:0 0 22px #ffaa2bb0;animation:sealbeat 1.2s ease-in-out infinite alternate}
 @keyframes sealbeat{to{box-shadow:0 0 32px #ffaa2b}}
-.seal svg{width:50%;height:50%}
+.seal svg{width:60%;height:60%}
 .sp{position:fixed;right:16px;bottom:16px;z-index:30;width:min(300px,calc(100vw - 32px));border-radius:12px;overflow:hidden;box-shadow:0 8px 30px #000c;visibility:hidden;opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
 .sp.show{visibility:visible;opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -291,24 +289,23 @@ function Game({ music }) {
           <div className="titlerow"><h1>DEVils Poker</h1><span className="tag">Estimation Grimoire</span></div>
         </div>
         <p className="sub">Estimate at your own risk. No refunds, no story points held sacred.</p>
-        <button type="button" className="btn rev" onClick={summon}><span>Start a session</span></button>
-        <p className="sub" style={{ marginTop: 16 }}>You'll get a link to share. Everyone who opens it joins as a random devil.</p>
         {err && <div className="err" role="alert">{err}</div>}
 
         <div className="rules">
-          <h2>Why this exists</h2>
+          <h2>Dark humor is the last remaining deliverable.</h2>
           <p className="lede">
             Standups became status meetings. Retros produce the same three sticky notes every
             two weeks. Story points get converted back into hours anyway. The numbers were
             always made up &mdash; so now they're made up by devils.
           </p>
-          <ol>
-            <li>Open the link. You're auto-assigned a <b>random devil name</b>. No login, no accounts.</li>
-            <li>Read the ticket. Pick the card that best captures your dread.</li>
-            <li>Change your mind as often as you like &mdash; nothing is shown until someone reveals.</li>
-            <li>Once the coven has voted, hit <b>Reveal Votes</b>. Matching votes group into one card.</li>
-            <li>Disagreement? Talk it through, then start a <b>new round</b> and vote again.</li>
-          </ol>
+          <div className="steps">
+            <p>Open the link. You're auto-assigned a <b>random devil name</b>.</p> 
+            <button type="button" className="btn rev" onClick={summon}><span>Start a session</span></button>
+            <p>No login, no accounts.</p>
+            <p>Read the ticket. Pick the card that best captures your <b>dread</b>.</p>
+            <p>Once the coven has voted, hit <b>Reveal Votes</b>. Matching votes group into one card.</p>
+            <p>Disagreement? Talk it through, then start a <b>new round</b> and vote again.</p>
+          </div>
         </div>
       </main>
     );
@@ -493,29 +490,33 @@ function MusicToggle({ music }) {
     <button type="button" className="seal" onClick={toggle} aria-pressed={on}
       aria-label={on ? "Turn music off" : "Turn music on"} title={on ? "Music on: Spooky, Scary Skeletons" : "Music off"}>
       {on ? (
-        // assembled: skull grinning over crossbones, mid-jig
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="7.6" r="4.1" />
-          <circle cx="10.3" cy="7" r="0.85" fill="currentColor" stroke="none" />
-          <circle cx="13.7" cy="7" r="0.85" fill="currentColor" stroke="none" />
-          <path d="M11.1 9.6l0.9 1.1 0.9-1.1" />
-          <path d="M9.6 10.7h4.8" />
-          <path d="M5 20l6.2-6.2M19 20l-6.2-6.2" />
-          <path d="M5 20l2-.6M19 20l-2-.6M11.2 13.8l-.6-2M12.8 13.8l.6-2" />
+        // assembled: a proper skull over crossbones
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M8.6 19l1.2-2.4M15.4 19l-1.2-2.4" />
+          <path d="M4 21l16-8M20 21L4 13" />
+          <circle cx="12" cy="8.4" r="5.4" />
+          <path d="M9 12.6v2.2a1 1 0 001 1h4a1 1 0 001-1v-2.2" />
+          <circle cx="9.7" cy="8" r="1.15" fill="currentColor" stroke="none" />
+          <circle cx="14.3" cy="8" r="1.15" fill="currentColor" stroke="none" />
+          <path d="M12 9.4l0.9 1.6h-1.8z" fill="currentColor" stroke="none" />
         </svg>
       ) : (
-        // fallen apart: same skull, toppled, bones scattered
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <g transform="rotate(-18 8.4 8)">
-            <circle cx="8.4" cy="8" r="3.4" />
-            <circle cx="7.1" cy="7.5" r="0.7" fill="currentColor" stroke="none" />
-            <circle cx="9.7" cy="7.5" r="0.7" fill="currentColor" stroke="none" />
-            <path d="M7.3 10.2h2.2" />
+        // fallen apart: skull cracked in two, jaw dropped, bones scattered
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <g transform="translate(-0.9,-0.6) rotate(-8 9 7)">
+            <path d="M6 8.6a4.6 4.6 0 018.6-2.7" />
+            <circle cx="7.6" cy="7.4" r="1" fill="currentColor" stroke="none" />
+            <circle cx="11.9" cy="5.7" r="1" fill="currentColor" stroke="none" />
           </g>
-          <path d="M12.5 15l5.5 4.2" />
-          <path d="M12.5 19.2l1.6-.9M17 19.2l1.5-1" />
-          <path d="M17.3 5.6l2.4 1.6M19.7 7.2l-.7 2" />
-          <circle cx="4.5" cy="16.5" r="0.75" fill="currentColor" stroke="none" />
+          <path d="M7.6 10.4l1.3 1-1 1.3 1.5 1" strokeWidth="1.5" opacity=".8" />
+          <g transform="translate(1.4,1.6) rotate(9 13 15)">
+            <path d="M9.6 12.6a4.6 4.6 0 008.8 1.6" />
+            <path d="M12.3 15.6v1.6a1 1 0 001 1h1.4a1 1 0 001-1v-1.6" />
+          </g>
+          <path d="M4 20l5.4-3.4" /><path d="M4 20l1.9.3M6.6 18.4l1.8.7" />
+          <path d="M14.5 21l5.3-4.4" /><path d="M14.5 21l1.9-.2M17.4 18.6l1.7-.8" />
+          <circle cx="19.5" cy="6" r="0.8" fill="currentColor" stroke="none" />
+          <circle cx="21" cy="9" r="0.55" fill="currentColor" stroke="none" />
         </svg>
       )}
     </button>
